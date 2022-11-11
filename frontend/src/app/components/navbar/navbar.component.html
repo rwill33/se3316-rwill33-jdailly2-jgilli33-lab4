@@ -20,7 +20,17 @@
         </li>
       </ul>
       <button [routerLink]="'/dashboard'" *ngIf="!(authService.isLoggedIn)" [ngClass]="'btn btn-primary'">Log In</button>
-      <button [routerLink]="'/dashboard'" *ngIf="(authService.isLoggedIn)" [ngClass]="'btn btn-outline-primary'">Account</button>
+      <div class="d-flex" *ngIf="(authService.isLoggedIn)">
+        <div class="input-group me-3">
+          <span class="input-group-text" id="basic-addon1">
+            <span class="material-symbols-outlined">
+            account_circle
+            </span>
+          </span>
+        <button [routerLink]="'/dashboard'"  [ngClass]="'btn btn-outline-primary'">Account</button>
+        </div>
+        <button [routerLink]="'/'" [ngClass]="'btn btn-primary text-nowrap'" (click)="authService.SignOut()" >Log Out</button>
+      </div>
     </div>
 </div>
 

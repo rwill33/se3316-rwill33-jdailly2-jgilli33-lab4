@@ -1,33 +1,30 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Sign In</h3>
-      <div class="formGroup">
-        <input type="text" class="formControl" placeholder="Username" #userName required>
+<div class="container-sm d-flex justify-content-center align-items-center">
+  <div class="container-fluid sign-in-container">
+      <h3 class="d-flex justify-content-center">Sign In</h3>
+      <div class="input-group flex-nowrap mt-5 mb-4">
+        <span class="input-group-text" id="addon-wrapping">@</span>
+        <input type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="addon-wrapping" #userName required>
       </div>
-      <div class="formGroup">
-        <input type="password" class="formControl" placeholder="Password" #userPassword required>
+      <div class="input-group flex-nowrap mb-2">
+        <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" #userPassword required>
       </div>
       <!-- Calling SignIn Api from AuthService -->
-      <div class="formGroup">
-        <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
+      <div class="input-group flex-nowrap mb-3">
+        <input type="button" class="btn btn-primary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
       </div>
       <div class="formGroup">
         <span class="or"><span class="orInner">Or</span></span>
       </div>
       <!-- Calling GoogleAuth Api from AuthService -->
-      <div class="formGroup">
-        <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
+      <div class="input-group flex-nowrap mb-2">
+        <button type="button" class="btn btn-outline-success" (click)="authService.GoogleAuth()">
           <i class="fab fa-google-plus-g"></i>
           Log in with Google
         </button>
       </div>
-      <div class="forgotPassword">
-        <span routerLink="/forgot-password">Forgot Password?</span>
-      </div>
-    </div>
+        <a routerLink="/forgot-password">Forgot Password?</a>
     <div class="redirectToLogin">
-      <span>Don't have an account?<span class="redirect" routerLink="/register-user"> Sign Up</span></span>
+      <span>Don't have an account?<a class="redirect" routerLink="/register-user"> Sign Up</a></span>
     </div>
   </div>
 </div>

@@ -7,17 +7,22 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   userData: any; // Save logged in user data
+  error: BehaviorSubject<boolean>;
+  errorMessage: BehaviorSubject<string>;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
+    this.error = new BehaviorSubject<boolean>(false);
+    this.errorMessage = new BehaviorSubject<string>("");
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
@@ -31,6 +36,19 @@ export class AuthService {
       }
     });
   }
+  setError(value: boolean): void {
+    this.error.next(value);
+  }
+  getError(): Observable<boolean> {
+    return this.error.asObservable();
+  }
+  setErrorMessage(value: string): void {
+    this.errorMessage.next(value);
+  }
+  getErrorMessage(): Observable<string> {
+    return this.errorMessage.asObservable();
+  }
+
   // Sign in with email/password
   SignIn(email: string, password: string) {
     return this.afAuth
@@ -39,12 +57,16 @@ export class AuthService {
         this.SetUserData(result.user);
         this.afAuth.authState.subscribe((user) => {
           if (user) {
+            this.setError(false);
             this.router.navigate(['']);
           }
         });
       })
       .catch((error) => {
-        window.alert(error.message);
+        // window.alert(error.message);
+        console.log(error.code);
+        this.setError(true);
+        this.setErrorMessage(error.message)
       });
   }
   // Sign up with email/password

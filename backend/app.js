@@ -1,4 +1,9 @@
 const express = require("express");
+const mysql = require('mysql');
+const fs = require("fs");
+
+const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
+const connection = mysql.createConnection(config);
 
 const router = express.Router();
 const app = express();
@@ -18,9 +23,33 @@ app.use((req, res, next) => {
 // Get genre names, IDs and parent IDs.
 router.route('/genres')
   .get(async (req, res) => {
-    // const genres = await dataReader.getGenres()
-    // res.send(genres);
-  })
+      connection.connect(function(err) {
+        if (err) {
+          res.status(500).send(`Could not connect to database`);
+        } else {
+          console.log("Connected!")
+          connection.query('SELECT * FROM Genres', (err, rows, fields) => {
+            if (err) {
+              res.status(500).send(`Error querying genres`)
+            } else {
+              const genres = [];
+              rows.map((genre) => {
+                genres.push({
+                  name: genre.title,
+                  id: genre.genreId,
+                  parentId: genre.parentId
+              })})
+              res.send(genres);
+            }
+          })
+          .on('end', () => {
+            connection.end();
+            console.log("Disconnected!");
+          })
+        };
+      })
+    }
+  )
 
 // Get the artist details (at least 6 key attributes) given  an artist ID.
 router.route('/artists/:id')

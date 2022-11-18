@@ -1,0 +1,15 @@
+{
+  "name": "sql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "populateAlbums.js",
+  "scripts": {
+    "populate": "node populateGenres.js & node populateArtists.js & node populateAlbums.js & node populateTracks.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parser": "^3.0.0"
+  }
+}

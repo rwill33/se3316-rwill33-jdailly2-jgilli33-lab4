@@ -8,6 +8,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +19,7 @@ export class AuthService {
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
+    public db: AngularFireDatabase,
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
@@ -28,11 +30,26 @@ export class AuthService {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
+        const ref = this.db.object('users/' + user.uid);
+        ref.query.ref.on('value', (snapshot) => {
+          const role = snapshot.val();
+          if(role === null) {
+            ref.set({admin: false});
+            localStorage.setItem('role', JSON.stringify({admin: false}));
+          } else {
+            localStorage.setItem('role', JSON.stringify({admin: role.admin}));
+          }
+        }, (errorObject) => {
+          console.log('The read failed: ' + errorObject.name);
+        });
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
+        JSON.parse(localStorage.getItem('role')!);
       } else {
         localStorage.setItem('user', 'null');
+        localStorage.setItem('role', 'null')
         JSON.parse(localStorage.getItem('user')!);
+        JSON.parse(localStorage.getItem('role')!);
       }
     });
   }
@@ -91,7 +108,7 @@ export class AuthService {
         this.router.navigate(['verify-email-address']);
       });
   }
-  // Reset Forggot password
+  // Reset Forgot password
   ForgotPassword(passwordResetEmail: string) {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
@@ -102,10 +119,19 @@ export class AuthService {
         window.alert(error);
       });
   }
-  // Returns true when user is looged in and email is verified
+  // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.emailVerified !== false ? true : false;
+  }
+    // Returns true when user is logged in and email is verified
+  get user(): any {
+      const user = JSON.parse(localStorage.getItem('user')!);
+      return user;
+    }
+  get role(): any {
+    const role = JSON.parse(localStorage.getItem('role')!);
+    return role;
   }
   // Sign in with Google
   GoogleAuth() {
@@ -150,6 +176,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.removeItem('role');
       this.router.navigate(['home']);
     });
   }

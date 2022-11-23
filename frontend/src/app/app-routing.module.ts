@@ -21,7 +21,11 @@ const routes: Routes = [
   { path: 'register-user', component: SignUpComponent },
   { path: 'dashboard', component: DashboardComponent, children: [
     {
-        path: '',
+      path: 'playlists',
+      component: DashboardComponent
+    },
+    {
+        path: 'admin',
         component: DashboardComponent,
         canActivate: [PermissionGuard]
 // Permission which is need to access this component.

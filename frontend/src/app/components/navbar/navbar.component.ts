@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -7,9 +7,20 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  public loggedIn: boolean = false;
   constructor(
-    public authService: AuthService
-  ) { }
+    public authService: AuthService,
+    private cdRef:ChangeDetectorRef
+  ) {
+    this.authService.afAuth.authState.subscribe((user) => {
+      if (user && user?.emailVerified){
+        this.loggedIn = true;
+      } else {
+        this.loggedIn = false;
+      }
+      this.cdRef.detectChanges();
+    })
+  }
 
   ngOnInit(): void {
   }

@@ -15,7 +15,8 @@ import { environment } from 'src/environments/environment';
 // Auth Service
 import { AuthService } from "./shared/services/auth.service";
 
-import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AlertModule } from 'ngx-bootstrap/alert';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
@@ -23,6 +24,8 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { HomeComponent } from './components/home/home.component';
+import { AccountComponent } from './components/account/account.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,8 @@ import { HomeComponent } from './components/home/home.component';
     ForgotPasswordComponent,
     VerifyEmailComponent,
     HomeComponent,
+    AccountComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,8 @@ import { HomeComponent } from './components/home/home.component';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    TabsModule.forRoot(),
+    ModalModule.forRoot(),
+    AlertModule.forRoot()
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

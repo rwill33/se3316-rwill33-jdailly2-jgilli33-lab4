@@ -1,0 +1,15 @@
+.container-fluid {
+  height: 100vh;
+}
+
+.row {
+  height: 100%;
+}
+
+.sidebar{
+  padding: 0;
+}
+
+.nav-link{
+  border-radius: 0;
+}

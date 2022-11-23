@@ -9,13 +9,17 @@ import {
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { FirebaseError } from 'firebase/app';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   userData: any; // Save logged in user data
   error: BehaviorSubject<boolean>;
+  success: BehaviorSubject<boolean>;
   errorMessage: BehaviorSubject<string>;
+  alert: BehaviorSubject<string>;
+
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -23,8 +27,10 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
+    this.success = new BehaviorSubject<boolean>(false);
     this.error = new BehaviorSubject<boolean>(false);
     this.errorMessage = new BehaviorSubject<string>("");
+    this.alert = new BehaviorSubject<string>("");
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
@@ -65,12 +71,19 @@ export class AuthService {
   getErrorMessage(): Observable<string> {
     return this.errorMessage.asObservable();
   }
+  setSuccess(value: boolean): void {
+    this.success.next(value);
+  }
+  getSuccess(): Observable<boolean> {
+    return this.success.asObservable();
+  }
 
   // Sign in with email/password
   SignIn(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
+        console.log(result);
         this.SetUserData(result.user);
         this.afAuth.authState.subscribe((user) => {
           if (user) {
@@ -87,10 +100,11 @@ export class AuthService {
       });
   }
   // Sign up with email/password
-  SignUp(email: string, password: string) {
+  SignUp(email: string, password: string, username: string) {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
+        result.user?.updateProfile({displayName: username})
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
@@ -154,6 +168,51 @@ export class AuthService {
         window.alert(error);
       });
   }
+  ChangePassword(oldPassword: string, password: string, confirmPassword: string) {
+    if (password === confirmPassword) {
+      this.afAuth.currentUser.then((user: any) => {
+        if (user) {
+          const credential = auth.EmailAuthProvider.credential(user.email, oldPassword)
+          user.reauthenticateWithCredential(credential).then((data: any) => {
+            console.log("Reauthenticated!");
+            data.user.updatePassword(password)
+            .then(() => {
+              console.log("Update Success!")
+              this.setSuccess(true);
+              // Update successful.
+            }).catch((error: FirebaseError) => {
+              this.setError(true);
+              if (error.code === "auth/weak-password") {
+                this.setErrorMessage("Password must be at least 6 characters");
+              } else {
+                this.setErrorMessage(error.code);
+              }
+              console.log(error)
+              this.setSuccess(false);
+              // An error ocurred
+              // ...
+            });
+          }
+
+          ).catch((error: FirebaseError) => {
+            this.setError(true);
+              if (error.code === "auth/wrong-password") {
+                this.setErrorMessage("Invalid old password");
+              } else {
+                this.setErrorMessage(error.code);
+              }
+            console.log(error)
+            this.setSuccess(false);
+          })
+        }
+      })
+    } else {
+      console.log("Passwords must match");
+      this.setError(true);
+      this.setErrorMessage("Passwords Must Match");
+    }
+  }
+
   /* Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */

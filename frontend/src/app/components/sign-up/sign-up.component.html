@@ -5,15 +5,18 @@
       </span>
       <h3 class="d-flex justify-content-center">Sign Up</h3>
       <div class="input-group flex-nowrap mt-5 mb-3">
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" #userName required>
+      </div>
+      <div class="input-group flex-nowrap mb-3">
         <span class="input-group-text" id="addon-wrapping">@</span>
-        <input type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="addon-wrapping" #userName required>
+        <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="addon-wrapping" #email required>
       </div>
       <div class="input-group flex-nowrap mb-4">
         <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" #userPassword required>
       </div>
       <!-- Calling SignIn Api from AuthService -->
       <div class="input-group flex-nowrap mb-3">
-        <input type="button" class="btn btn-primary" value="Sign Up" (click)="authService.SignUp(userName.value, userPassword.value)">
+        <input type="button" class="btn btn-primary" value="Sign Up" (click)="authService.SignUp(email.value, userPassword.value, userName.value)">
       </div>
   </div>
 </div>

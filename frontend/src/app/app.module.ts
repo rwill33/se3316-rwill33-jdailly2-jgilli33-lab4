@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,7 +16,8 @@ import { environment } from 'src/environments/environment';
 // Auth Service
 import { AuthService } from "./shared/services/auth.service";
 
-import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AlertModule } from 'ngx-bootstrap/alert';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
@@ -28,6 +30,9 @@ import { PublicPlaylistComponent } from './components/public_playlist/public-pla
 import { GenresComponent } from './components/genres/genres.component';
 import { TracksComponent } from './components/tracks/tracks.component';
 import { ArtistComponent } from './components/artist/artist.component';
+import { AccountComponent } from './components/account/account.component';
+import { AlertComponent } from './components/alert/alert.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +49,9 @@ import { ArtistComponent } from './components/artist/artist.component';
     GenresComponent,
     TracksComponent,
     ArtistComponent,
+    AccountComponent,
+    AlertComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +61,9 @@ import { ArtistComponent } from './components/artist/artist.component';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    TabsModule.forRoot(),
+    ModalModule.forRoot(),
+    AlertModule.forRoot(),
+    FormsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

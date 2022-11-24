@@ -1,0 +1,49 @@
+
+  <div class="inner-adjust">
+    <div class="pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">User Profile</h1>
+    </div>
+    <bs-alert type="success" [dismissible]="true" [isOpen]="this.success">Password Changed</bs-alert>
+    <!-- Show user data when logged in -->
+    <div class="row" *ngIf="authService.userData as user">
+      <div class="col-md-12">
+        <div class="media">
+          <div class="media-body">
+            <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+            <p>Email: <strong>{{user.email}}</strong></p>
+            <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+          </div>
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" (click)="openModal(template)">Change Password</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Change Password</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="input-group flex-nowrap mb-4">
+        <input type="password" [ngClass]="this.error || this.oldPasswordError ? 'form-control is-invalid' : 'form-control'" placeholder="Old Password" aria-label="Old Password" aria-describedby="addon-wrapping" #oldPassword required>
+      </div>
+      <div class="input-group flex-nowrap mb-4">
+        <input type="password" [ngClass]="this.error || this.passwordError ? 'form-control is-invalid' : 'form-control'" placeholder="New Password" aria-label="New Password" aria-describedby="addon-wrapping" #password required>
+      </div>
+      <div class="input-group has-validation mb-4">
+        <input type="password" [ngClass]="this.error || this.confirmPasswordError ? 'form-control is-invalid' : 'form-control'" placeholder="Confirm Password" aria-label="Confirm Password" aria-describedby="addon-wrapping" #confirmPassword required>
+        <div [textContent]="this.errorMessage" class="invalid-feedback">
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" (click)="this.inputValidation(oldPassword.value, password.value, confirmPassword.value)">
+        Change Password
+      </button>
+    </div>
+  </ng-template>

@@ -12,6 +12,7 @@ import{TracksComponent} from './components/tracks/tracks.component';
 import {ArtistComponent} from './components/artist/artist.component';
 // route guard
 import { AuthGuard } from './shared/guard/auth.guard';
+import { PermissionGuard } from './shared/guard/permission.guard';
 const routes: Routes = [
   // { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   {path: '', component: HomeComponent},
@@ -23,7 +24,18 @@ const routes: Routes = [
   { path: 'home', redirectTo: '', pathMatch: 'full'},
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, children: [
+    {
+      path: 'playlists',
+      component: DashboardComponent
+    },
+    {
+        path: 'admin',
+        component: DashboardComponent,
+        canActivate: [PermissionGuard]
+// Permission which is need to access this component.
+// Permission checked by Permission Guard
+    }], canActivate: [AuthGuard]},
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
 ];

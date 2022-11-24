@@ -7,21 +7,21 @@ import { AuthService } from "../../shared/services/auth.service";
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  error: boolean;
-  errorMessage: string | null;
+  error: boolean = false;
+  errorMessage: string | null = null;
   constructor(
     public authService: AuthService
   ) {
-    this.error = false;
-    this.errorMessage = null;
-  }
-
-  ngOnInit() {
     this.authService.getError().subscribe((value) => {
       this.error = value;
     });
     this.authService.getErrorMessage().subscribe((value) => {
       this.errorMessage = value;
     });
+  }
+
+  ngOnInit() {
+    this.error = false;
+    this.errorMessage = null;
   }
 }

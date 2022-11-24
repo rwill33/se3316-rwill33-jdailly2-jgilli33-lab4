@@ -19,7 +19,7 @@
           <a class="nav-link" href="/artists">Artists</a>
         </li>
       </ul>
-      <button [routerLink]="'/dashboard'" *ngIf="!(this.loggedIn)" [ngClass]="'btn btn-outline-primary'">Log In</button>
+      <button [routerLink]="'/dashboard'" *ngIf="!(this.loggedIn)" [ngClass]="'btn btn-outline-dark'">Log In</button>
       <div class="d-flex" *ngIf="(this.loggedIn)">
         <div class="input-group me-3">
           <span class="input-group-text" id="basic-addon1">
@@ -27,9 +27,9 @@
             account_circle
             </span>
           </span>
-        <button [routerLink]="'/dashboard'"  [ngClass]="'btn btn-outline-primary'">Account</button>
+        <button [routerLink]="'/dashboard'"  [ngClass]="'btn btn-outline-dark'">Account</button>
         </div>
-        <button [routerLink]="'/'" [ngClass]="'btn btn-primary text-nowrap'" (click)="authService.SignOut()" >Log Out</button>
+        <button [routerLink]="'/'" [ngClass]="'btn btn-dark text-nowrap'" (click)="authService.SignOut()" >Log Out</button>
       </div>
     </div>
 </div>

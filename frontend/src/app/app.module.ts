@@ -25,6 +25,11 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { HomeComponent } from './components/home/home.component';
+import { ButtonComponent } from './components/button/button.component';
+import { PublicPlaylistComponent } from './components/public_playlist/public-playlist.component';
+import { GenresComponent } from './components/genres/genres.component';
+import { TracksComponent } from './components/tracks/tracks.component';
+import { ArtistComponent } from './components/artist/artist.component';
 import { AccountComponent } from './components/account/account.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -39,6 +44,11 @@ import { AdminComponent } from './components/admin/admin.component';
     ForgotPasswordComponent,
     VerifyEmailComponent,
     HomeComponent,
+    ButtonComponent,
+    PublicPlaylistComponent,
+    GenresComponent,
+    TracksComponent,
+    ArtistComponent,
     AccountComponent,
     AlertComponent,
     AdminComponent,

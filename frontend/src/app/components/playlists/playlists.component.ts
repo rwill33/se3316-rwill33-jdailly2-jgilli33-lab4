@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, of } from 'rxjs';
 import { ExpressService } from 'src/app/shared/services/express.service';
+import { Playlist } from '../../shared/services/playlist';
 
 @Component({
   selector: 'app-playlists',
@@ -12,7 +13,7 @@ export class PlaylistsComponent implements OnInit {
   modalRef?: BsModalRef;
   error?: boolean;
   errorMessage?: string;
-  playlists?: [];
+  playlists?: Playlist[];
   constructor(
     private modalService: BsModalService,
     private expressService: ExpressService
@@ -35,7 +36,7 @@ export class PlaylistsComponent implements OnInit {
   }
   inputValidation(playlistName: string) {
     this.expressService.createPlaylist(playlistName).subscribe(
-      (response: any) => {
+    (response: any) => {
       this.playlists = response;
       this.closeModal();
     },
@@ -45,4 +46,7 @@ export class PlaylistsComponent implements OnInit {
     });
   }
 
+  getPlaylist(id: number) {
+    console.log(id);
+  }
 }

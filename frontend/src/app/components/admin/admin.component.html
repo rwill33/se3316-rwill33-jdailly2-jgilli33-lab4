@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">UID</th>
+      <th scope="col">Email</th>
+      <th scope="col">Username</th>
+      <th scope="col">IsAdmin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <th scope="row">{{user?.uid}}</th>
+      <td>{{user?.email}}</td>
+      <td>{{user?.username}}</td>
+      <td>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" [checked]="user.admin" (change)="changeUserPermission($event, user.uid)">
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

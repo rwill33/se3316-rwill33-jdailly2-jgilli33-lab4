@@ -19,8 +19,8 @@
           <a class="nav-link" href="/artists">Artists</a>
         </li>
       </ul>
-      <button [routerLink]="'/dashboard'" *ngIf="!(authService.isLoggedIn)" [ngClass]="'btn btn-outline-primary'">Log In</button>
-      <div class="d-flex" *ngIf="(authService.isLoggedIn)">
+      <button [routerLink]="'/dashboard'" *ngIf="!(this.loggedIn)" [ngClass]="'btn btn-outline-primary'">Log In</button>
+      <div class="d-flex" *ngIf="(this.loggedIn)">
         <div class="input-group me-3">
           <span class="input-group-text" id="basic-addon1">
             <span class="material-symbols-outlined">

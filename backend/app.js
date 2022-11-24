@@ -124,24 +124,27 @@ router.route('/playlists/:name')
 router.route('/playlists')
   // Get all playlists
   .get(async (req, res) => {
-    // res.send(await storage.data());
+    connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Selecting Playlists.`);
+      } else {
+        res.send(rows);
+      }
+    });
   })
   // Create New Playlist
   .put(async (req, res) => {
-    console.log(req.body.name);
     connection.query(`INSERT INTO UserPlaylists (uid, playlistName) VALUES ('iUMOeYpLWsb8mvoxqYtWJLHPabE2', '${req.body.name}')`, (err, rows, fields) => {
       if (err) {
         if (err.errno === 1062) {
           res.status(500).send(`Playlist with that name already exists.`);
         } else {
-          console.log(err);
           res.status(500).send(`Error Inserting.`);
         }
       } else {
         console.log("Inserted");
         connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
           if (err) {
-            console.log(err);
             res.status(500).send(`Error Selecting Playlists.`);
           } else {
             res.send(rows);

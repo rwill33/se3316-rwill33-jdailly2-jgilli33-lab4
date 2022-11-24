@@ -25,6 +25,13 @@ export class PlaylistsComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.expressService.getUserPlaylists().subscribe(
+      (response: any) => {
+        this.playlists = response;
+      },
+      (error) => {
+        console.log(error);
+      });
   }
 
   openModal(template: TemplateRef<any>) {

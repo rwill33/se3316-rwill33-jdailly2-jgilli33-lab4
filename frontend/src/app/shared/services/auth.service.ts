@@ -40,7 +40,12 @@ export class AuthService {
         ref.query.ref.on('value', (snapshot) => {
           const role = snapshot.val();
           if(role === null) {
-            ref.set({admin: false});
+            ref.set(
+              {admin: false,
+              username: user.displayName,
+              email: user.email
+              }
+            );
             localStorage.setItem('role', JSON.stringify({admin: false}));
           } else {
             localStorage.setItem('role', JSON.stringify({admin: role.admin}));

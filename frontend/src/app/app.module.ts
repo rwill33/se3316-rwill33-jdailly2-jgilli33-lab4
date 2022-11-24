@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +27,7 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { HomeComponent } from './components/home/home.component';
 import { AccountComponent } from './components/account/account.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { AlertComponent } from './components/alert/alert.component';
     HomeComponent,
     AccountComponent,
     AlertComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { AlertComponent } from './components/alert/alert.component';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     ModalModule.forRoot(),
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    FormsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row align-items-start">
+    <div class="col-md-5 col-lg-4">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="addon-wrapping">
+        <span class="input-group-text" id="addon-wrapping">@</span>
+      </div>
+    </div>
+    <div class="col-md-4 col-lg-5"></div>
+    <div class="col-3" style="display: flex; justify-content: end;">
+      <button class="btn btn-dark text-nowrap" (click)="openModal(template)">New Playlist</button>
+    </div>
+  </div>
+</div>
+<div class="container text-center">
+  <div class="row row-cols-4">
+    <div class="col">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <img src="../../../assets/musicicon.jpeg" class="card-img-top" alt="...">
+          <h5 class="card-title">Playlist Name</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Create New Playlist</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group has-validation mb-4">
+      <input type="text" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Playlist Name" aria-label="Playlist Name" aria-describedby="addon-wrapping" #playlistName required>
+      <div [textContent]="this.errorMessage" class="invalid-feedback"></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value)">
+      Create Playlist
+    </button>
+  </div>
+</ng-template>
+
+

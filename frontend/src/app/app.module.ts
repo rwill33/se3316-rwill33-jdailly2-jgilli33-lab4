@@ -1,3 +1,4 @@
+import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser';
@@ -33,6 +34,7 @@ import { ArtistComponent } from './components/artist/artist.component';
 import { AccountComponent } from './components/account/account.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { PlaylistsComponent } from './components/playlists/playlists.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { AdminComponent } from './components/admin/admin.component';
     AccountComponent,
     AlertComponent,
     AdminComponent,
+    PlaylistsComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import { AdminComponent } from './components/admin/admin.component';
     AngularFireDatabaseModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

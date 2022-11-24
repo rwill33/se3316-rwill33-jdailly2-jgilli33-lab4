@@ -1,6 +1,7 @@
 const express = require("express");
 const mysql = require('mysql');
 const fs = require("fs");
+const cors = require('cors')
 
 const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
 const connection = mysql.createConnection(config);
@@ -20,14 +21,16 @@ app.use((req, res, next) => {
   next();
 })
 
+var corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
+
+app.use(cors(corsOptions));
+
 // Get genre names, IDs and parent IDs.
 router.route('/genres')
   .get(async (req, res) => {
-      connection.connect(function(err) {
-        if (err) {
-          res.status(500).send(`Could not connect to database`);
-        } else {
-          console.log("Connected!")
           connection.query('SELECT * FROM Genres', (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
@@ -42,12 +45,6 @@ router.route('/genres')
               res.send(genres);
             }
           })
-          .on('end', () => {
-            connection.end();
-            console.log("Disconnected!");
-          })
-        };
-      })
     }
   )
 
@@ -131,6 +128,29 @@ router.route('/playlists')
   })
   // Create New Playlist
   .put(async (req, res) => {
+    console.log(req.body.name);
+    connection.query(`INSERT INTO UserPlaylists (uid, playlistName) VALUES ('iUMOeYpLWsb8mvoxqYtWJLHPabE2', '${req.body.name}')`, (err, rows, fields) => {
+      if (err) {
+        if (err.errno === 1062) {
+          res.status(500).send(`Playlist with that name already exists.`);
+        } else {
+          console.log(err);
+          res.status(500).send(`Error Inserting.`);
+        }
+      } else {
+        console.log("Inserted");
+        connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
+          if (err) {
+            console.log(err);
+            res.status(500).send(`Error Selecting Playlists.`);
+          } else {
+            res.send(rows);
+          }
+        })
+      }
+    });
+    
+    
     // const newPlaylist = req.body;
     // const existingPlaylists = await storage.keys();
     // let status = true;

@@ -1,6 +1,18 @@
 <app-navbar></app-navbar>
 <div>
-  made it to the tracks tab
-  
+  <div class = "search">
+    <input type="text" name="searchByArtist" placeholder="Search by artist"  [(ngModel)]="artist"><input>
+    
+  </div>
+<div>
+
+  <button (click) = "getPost()">show genres</button>
+<div *ngFor = "let post of posts | async">
+  {{post | json}}
+</div>
+
+
+</div>
+
 </div>
 

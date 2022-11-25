@@ -47,6 +47,28 @@ router.route('/genres')
           })
     }
   )
+  
+  router.route('/tracks/:name')
+  .get(async (req, res) => {
+    const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const query = "SELECT * FROM tracks WHERE artistName =?;";
+          connection.query(query,[name], (err, rows, fields) => {
+            if (err) {
+              res.status(500).send(`Error querying genres`)
+            } else {
+              console.log("made it");
+              const tracks = [];
+              rows.map((track) => {
+                tracks.push({
+                  name: track.artistName,
+                  title: track.trackTitle,
+                  
+              })})
+              res.send(tracks);
+            }
+          })
+    }
+  )
 
 // Get the artist details (at least 6 key attributes) given  an artist ID.
 router.route('/artists/:id')

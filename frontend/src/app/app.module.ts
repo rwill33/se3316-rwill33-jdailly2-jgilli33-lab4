@@ -35,6 +35,7 @@ import { AccountComponent } from './components/account/account.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { PlaylistsComponent } from './components/playlists/playlists.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { PlaylistsComponent } from './components/playlists/playlists.component';
     AlertComponent,
     AdminComponent,
     PlaylistsComponent,
+    PlaylistComponent,
   ],
   imports: [
     BrowserModule,

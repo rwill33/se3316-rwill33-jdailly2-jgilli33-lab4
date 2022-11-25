@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { catchError, of } from 'rxjs';
 import { ExpressService } from 'src/app/shared/services/express.service';
 import { Playlist } from '../../shared/services/playlist';
 
@@ -16,7 +16,8 @@ export class PlaylistsComponent implements OnInit {
   playlists?: Playlist[];
   constructor(
     private modalService: BsModalService,
-    private expressService: ExpressService
+    private expressService: ExpressService,
+    private router: Router
   ) {
     this.modalService.onHidden.subscribe(() => {
       this.error = false;
@@ -54,6 +55,7 @@ export class PlaylistsComponent implements OnInit {
   }
 
   getPlaylist(id: number) {
+    this.router.navigate(["/dashboard/playlists/" +id]);
     console.log(id);
   }
 }

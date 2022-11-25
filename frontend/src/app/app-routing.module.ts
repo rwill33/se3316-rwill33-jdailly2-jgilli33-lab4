@@ -27,7 +27,13 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, children: [
     {
       path: 'playlists',
-      component: DashboardComponent
+      component: DashboardComponent,
+      children: [
+        {
+          path: ":id",
+          component: DashboardComponent,
+        }
+      ]
     },
     {
         path: 'admin',

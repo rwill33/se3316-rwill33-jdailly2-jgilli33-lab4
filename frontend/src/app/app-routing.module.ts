@@ -13,6 +13,10 @@ import {ArtistComponent} from './components/artist/artist.component';
 // route guard
 import { AuthGuard } from './shared/guard/auth.guard';
 import { PermissionGuard } from './shared/guard/permission.guard';
+import { PlaylistsComponent } from './components/playlists/playlists.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AccountComponent } from './components/account/account.component';
 const routes: Routes = [
   // { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   {path: '', component: HomeComponent},
@@ -26,18 +30,25 @@ const routes: Routes = [
   { path: 'register-user', component: SignUpComponent },
   { path: 'dashboard', component: DashboardComponent, children: [
     {
+      path: '',
+      component: AccountComponent
+    },
+    {
       path: 'playlists',
-      component: DashboardComponent,
       children: [
         {
+          path: '',
+          component: PlaylistsComponent,
+        },
+        {
           path: ":id",
-          component: DashboardComponent,
+          component: PlaylistComponent
         }
       ]
     },
     {
         path: 'admin',
-        component: DashboardComponent,
+        component: AdminComponent,
         canActivate: [PermissionGuard]
 // Permission which is need to access this component.
 // Permission checked by Permission Guard

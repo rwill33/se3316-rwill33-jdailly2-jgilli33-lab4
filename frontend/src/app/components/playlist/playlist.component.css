@@ -1,0 +1,44 @@
+.container{
+  margin: 24px 0;
+}
+
+.card {
+  background-color: #E8E8E8;
+  display: flex;
+  align-items: center;
+  width: 16rem !important;
+}
+
+img{
+  width:200px;
+  height:200px;
+}
+
+.header{
+  display: flex;
+  padding-bottom: 24px;
+}
+
+.playlist-name{
+  padding-left: 3rem;
+  font-size: 5rem;
+}
+.user-name{
+  font-size: 2rem;
+}
+
+.details{
+  padding-left: 3rem;
+}
+
+.back-button{
+  padding: 10px;
+}
+
+.material-symbols-outlined{
+  cursor: pointer;
+}
+
+button + button {
+  margin-left: 10px;
+}

@@ -17,4 +17,12 @@ export class ExpressService {
   getUserPlaylists() {
     return this.http.get("http://localhost:3000/api/playlists");
   }
+
+  getPlaylistById(id: number) {
+    return this.http.get("http://localhost:3000/api/playlists/" + id);
+  }
+
+  getPlaylistTracksById(id: number) {
+    return this.http.get("http://localhost:3000/api/playlists/tracks/" + id);
+  }
 }

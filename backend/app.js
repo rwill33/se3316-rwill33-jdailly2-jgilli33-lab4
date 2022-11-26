@@ -87,28 +87,28 @@ router.route('/artists')
     // res.send(artists);
   })
 
-router.route('/playlists/:name')
+router.route('/playlists/tracks/:id')
   // Get all tracks in a playlist
   .get(async (req, res) => {
-    // const obj = {};
-    // const trackDetailsArray = []
-    // let duration = 0;
-    // const tracks = await storage.get(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // obj['numOfTracks'] = tracks.length;
-    // await Promise.allSettled(tracks.map((element) => {
-    //   return new Promise(async (resolve) => {
-    //     const trackDetails = await dataReader.getTrackById(element);
-    //     trackDetailsArray.push(trackDetails);
-    //     let array = trackDetails.track_duration.split(":");
-    //     duration += parseInt(array[0]) + parseInt(array[1])/60;
-    //     resolve();
-    //   })
-    // }));
-    // const integ =  Math.floor(duration);
-    // const dec = Math.round((duration - integ)*60);
-    // obj['trackList'] = trackDetailsArray;
-    // obj['totalDuration'] = `${integ}:${dec}`;
-    // res.send(obj);
+    connection.query(`SELECT * FROM PlaylistTracks WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error querying Playlist Tracks`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
+
+router.route('/playlists/:id')
+  // Get all tracks in a playlist
+  .get(async (req, res) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error querying playlist details`)
+      } else {
+        res.send(rows[0]);
+      }
+    })
   })
   // Delete track from playlist
   .delete(async (req, res) => {
@@ -152,22 +152,6 @@ router.route('/playlists')
         })
       }
     });
-    
-    
-    // const newPlaylist = req.body;
-    // const existingPlaylists = await storage.keys();
-    // let status = true;
-    // existingPlaylists.map((key) => {
-    //   if (key.toLowerCase() === newPlaylist.name.replace(/</g, "&lt;").replace(/>/g, "&gt;").toLowerCase()) {
-    //     status = false;
-    //   }
-    // });
-    // if (status) {
-    //   await storage.setItem(newPlaylist.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"), []);
-    //   res.send(await storage.data());
-    // } else {
-    //   res.status(403).send(`Playlist with id=${newPlaylist.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")} already exists.`);
-    // }
   })
   // Add to playlist
   .post(async (req, res) => {

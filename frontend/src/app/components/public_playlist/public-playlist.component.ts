@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ExpressService } from 'src/app/shared/services/express.service';
 import { Playlist } from 'src/app/shared/services/playlist';
 
@@ -10,7 +11,8 @@ import { Playlist } from 'src/app/shared/services/playlist';
 export class PublicPlaylistComponent implements OnInit {
   playlists: Playlist[]| null = null;
   constructor(
-    private expressService: ExpressService
+    private expressService: ExpressService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -26,6 +28,11 @@ export class PublicPlaylistComponent implements OnInit {
       (error) => {
         console.log(error);
       });
+  }
+
+  getPlaylist(id: number) {
+    this.router.navigate(["/playlists/" +id]);
+    console.log(id);
   }
 
 }

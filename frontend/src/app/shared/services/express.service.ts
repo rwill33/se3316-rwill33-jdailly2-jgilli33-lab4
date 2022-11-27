@@ -33,4 +33,12 @@ export class ExpressService {
   getPublicPlaylists() {
     return this.http.get("http://localhost:3000/api/publicPlaylists");
   }
+
+  getPlaylistComments(playlistId: any) {
+    return this.http.get("http://localhost:3000/api/comment/" + playlistId);
+  }
+
+  addPlaylistReview(playlistId: any, uid: string, username: string, review: string, rating: number) {
+    return this.http.put("http://localhost:3000/api/comment/" + playlistId, {playlistId: playlistId, uid: uid, username: username, review: review, rating: rating})
+  }
 }

@@ -120,6 +120,30 @@ router.route('/playlists/:id')
     // }
     // res.send(await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")));
   })
+
+router.route('/comment/:id')
+.get((req, res) => {
+  connection.query(`SELECT * FROM Reviews WHERE playlistId='${req.params.id}'`, (err, rows, fields) => {
+    if (err) {
+      res.status(500).send(`Error Getting Comments.`);
+    } else {
+      res.send(rows);
+    }
+  });
+})
+.put((req, res) => {
+  console.log(req.body);
+  connection.query(`INSERT INTO Reviews(uid, username, playlistId, review, rating) VALUES('${req.body.uid}', '${req.body.username}', ${req.body.playlistId}, '${req.body.review}', ${req.body.rating});`, (err, rows, fields) => {
+    if (err) {
+      res.status(500).send(`Error Inserting Comment.`);
+    } else {
+      res.send(rows);
+    }
+  });
+
+})
+
+
 router.route('/publicPlaylists')
   .get((req, res) => {
     connection.query(`SELECT * FROM UserPlaylists WHERE isPublic=true`, (err, rows, fields) => {

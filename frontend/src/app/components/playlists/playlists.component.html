@@ -41,9 +41,12 @@
       <input type="text" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Playlist Name" aria-label="Playlist Name" aria-describedby="addon-wrapping" #playlistName required>
       <div [textContent]="this.errorMessage" class="invalid-feedback"></div>
     </div>
+    <div class="input-group">
+      <textarea class="form-control" placeholder="Description" aria-label="With textarea" #description></textarea>
+    </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value)">
+    <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value, description.value)">
       Create Playlist
     </button>
   </div>

@@ -134,7 +134,13 @@ router.route('/playlists')
   })
   // Create New Playlist
   .put(async (req, res) => {
-    connection.query(`INSERT INTO UserPlaylists (uid, playlistName) VALUES ('iUMOeYpLWsb8mvoxqYtWJLHPabE2', '${req.body.name}')`, (err, rows, fields) => {
+    let query;
+    if (req.body.description === "") {
+      query = `INSERT INTO UserPlaylists (uid, playlistName) VALUES ('${req.body.uid}', '${req.body.name}')`;
+    } else {
+      query = `INSERT INTO UserPlaylists (uid, playlistName, description) VALUES ('${req.body.uid}', '${req.body.name}', '${req.body.description}')`;
+    }
+    connection.query(query, (err, rows, fields) => {
       if (err) {
         if (err.errno === 1062) {
           res.status(500).send(`Playlist with that name already exists.`);
@@ -143,7 +149,7 @@ router.route('/playlists')
         }
       } else {
         console.log("Inserted");
-        connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
+        connection.query(`SELECT * FROM UserPlaylists WHERE uid='${req.body.uid}'`, (err, rows, fields) => {
           if (err) {
             res.status(500).send(`Error Selecting Playlists.`);
           } else {
@@ -156,15 +162,13 @@ router.route('/playlists')
   // Add to playlist
   .post(async (req, res) => {
     // const body = req.body;
-    // const playlist = await storage.getItem(body.playlistName.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // const track = await dataReader.getTrackById(body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-
-    // if(playlist && track && playlist.indexOf(body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;")) < 0) {
-    //   await storage.updateItem(body.playlistName.replace(/</g, "&lt;").replace(/>/g, "&gt;"), [...playlist, body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;")]);
-    //   res.send(track);
-    // } else {
-    //   res.status(404).send();
-    // }
+    connection.query(`UPDATE UserPlaylists SET isPublic=${req.body.isPublic} WHERE playlistId='${req.body.playlistId}'`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Updating Playlist.`);
+      } else {
+        res.send(rows);
+      }
+    });
   })
   // Delete Playlist
   .delete(async (req, res) => {

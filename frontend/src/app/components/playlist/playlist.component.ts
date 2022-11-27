@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ExpressService } from 'src/app/shared/services/express.service';
 import { Playlist } from 'src/app/shared/services/playlist';
-import { PlaylistsComponent } from '../playlists/playlists.component';
 
 @Component({
   selector: 'app-playlist',
@@ -67,6 +66,19 @@ export class PlaylistComponent implements OnInit {
         (error) => {
           console.log(error);
         });
+    }
+
+    changePublic(data: any, id: any) {
+      console.log(data.target.checked, id);
+      this.expressService.changePlaylistPublic(id, data.target.checked).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.tracks = response;
+        },
+        (error) => {
+          console.log(error);
+        });
+      this.getPlaylist(this.id);
     }
 
 

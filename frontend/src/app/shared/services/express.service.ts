@@ -10,8 +10,8 @@ export class ExpressService {
     private http: HttpClient
   ) { }
 
-  createPlaylist(playlistName: string) {
-    return this.http.put("http://localhost:3000/api/playlists", {name: playlistName});
+  createPlaylist(playlistName: string, description: string, uid: any) {
+    return this.http.put("http://localhost:3000/api/playlists", {name: playlistName, description: description, uid: uid});
   }
 
   getUserPlaylists() {
@@ -24,5 +24,9 @@ export class ExpressService {
 
   getPlaylistTracksById(id: number) {
     return this.http.get("http://localhost:3000/api/playlists/tracks/" + id);
+  }
+
+  changePlaylistPublic(id: number, isPublic: boolean) {
+    return this.http.post("http://localhost:3000/api/playlists", {isPublic: isPublic, playlistId: id});
   }
 }

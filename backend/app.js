@@ -120,6 +120,16 @@ router.route('/playlists/:id')
     // }
     // res.send(await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")));
   })
+router.route('/publicPlaylists')
+  .get((req, res) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE isPublic=true`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Selecting Playlists.`);
+      } else {
+        res.send(rows);
+      }
+    });
+  })
 
 router.route('/playlists')
   // Get all playlists

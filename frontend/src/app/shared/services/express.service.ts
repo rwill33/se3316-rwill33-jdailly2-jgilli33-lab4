@@ -29,4 +29,8 @@ export class ExpressService {
   changePlaylistPublic(id: number, isPublic: boolean) {
     return this.http.post("http://localhost:3000/api/playlists", {isPublic: isPublic, playlistId: id});
   }
+
+  getPublicPlaylists() {
+    return this.http.get("http://localhost:3000/api/publicPlaylists");
+  }
 }

@@ -4,6 +4,7 @@ import { ExpressService } from 'src/app/shared/services/express.service';
 import { Router } from '@angular/router';
 //import { Artist } from 'src/app/shared/services/Artist';
 import { Observable } from '@firebase/util';
+import {Artist} from 'src/app/shared/services/artist'
 @Component({
   selector: 'app-tracks',
   templateUrl: './tracks.component.html',
@@ -15,8 +16,35 @@ export class TracksComponent implements OnInit {
 readonly ROOT_URL = 'localhost:3000/api'
 artist: string = '';
 posts: any;
+artists?:Artist[];
+data:any =[];
+ngOnInit(): void {
 
-data = []
+}
+
+getArtists(){
+  console.log(this.artist)
+  this.expressService.getArtists(this.artist).subscribe(
+    (response: any) => {
+      this.artists = response;
+     //console.log(this.artists);
+      
+console.log(this.artists?.[0].artistName)
+
+//const artistnames = this.artists?.map(this.artists? => (this.artists?));
+
+
+    },
+    (error) => {
+      console.log(error);
+    });
+
+//console.log(this.artists)
+  //console.log("here1")
+    // this.router.navigate(["/dashboard/tracks/" +this.artist])
+    // console.log("here2")
+//console.log(this.artists);
+}
 
   getPost(){
    // console.log('this is what you entered', this.artist)
@@ -37,7 +65,6 @@ this.posts =this.http.get("http://localhost:3000/api/tracks/"+this.artist)
     private router: Router)
      {}
 
-  ngOnInit(): void {
-  }
+  
 
 }

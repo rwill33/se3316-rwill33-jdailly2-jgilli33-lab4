@@ -1,4 +1,7 @@
 export interface Artist{
-name:string;
-title:string;
+artistName?:string;
+artistTitle?:string;
+genres?:string;
+playLength?:BigInteger;
+year?:string;
 }

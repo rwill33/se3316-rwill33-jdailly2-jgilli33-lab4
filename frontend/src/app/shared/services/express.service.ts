@@ -21,6 +21,9 @@ export class ExpressService {
   getGenres(){
     return this.http.get("http://localhost:3000/api/genres")
   }
+  getArtists(artist:string){
+    return this.http.get("http://localhost:3000/api/tracks/" + artist);
+  }
 
 
 }

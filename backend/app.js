@@ -121,6 +121,29 @@ router.route('/playlists/:id')
     // res.send(await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")));
   })
 
+  router.route('/comment')
+  .post((req, res) => {
+    console.log(req.body.isHidden);
+    connection.query(`UPDATE Reviews SET isHidden=${req.body.isHidden} WHERE reviewId='${req.body.reviewId}'`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Getting Comments.`);
+      } else {
+        res.send(rows);
+      }
+    });
+  })
+
+router.route('/publicComments/:id')
+.get((req, res) => {
+  connection.query(`SELECT * FROM Reviews WHERE playlistId='${req.params.id}' AND isHidden='false'`, (err, rows, fields) => {
+    if (err) {
+      res.status(500).send(`Error Getting Comments.`);
+    } else {
+      res.send(rows);
+    }
+  });
+})
+
 router.route('/comment/:id')
 .get((req, res) => {
   connection.query(`SELECT * FROM Reviews WHERE playlistId='${req.params.id}'`, (err, rows, fields) => {

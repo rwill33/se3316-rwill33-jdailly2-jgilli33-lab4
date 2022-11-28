@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ExpressService } from 'src/app/shared/services/express.service';
 import { Playlist } from 'src/app/shared/services/playlist';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-public-playlist-details',
@@ -24,7 +25,8 @@ export class PublicPlaylistDetailsComponent implements OnInit {
   isReviewsCollapsed = true;
   isTracksCollapsed = false;
   rating: number = 3;
-  comments: []|null = null
+  comments?: any[];
+  selectedComment?: any;
 
     constructor(
       private route: ActivatedRoute,
@@ -57,6 +59,9 @@ ngOnDestroy(): void {
     }
 }
 
+getRole() {
+  return this.authService.role.admin;
+}
 openModal(template: TemplateRef<any>) {
   this.modalRef = this.modalService.show(template);
   this.rating = 3;
@@ -69,6 +74,29 @@ closeModal() {
 handleRatingChange(data: any,) {
   console.log(data.target.valueAsNumber);
   this.rating = data.target.valueAsNumber;
+}
+
+confirmHide(template: TemplateRef<any>, review: any) {
+  this.openModal(template);
+  this.selectedComment = review;
+}
+
+hideComment() {
+  this.expressService.hideReview(!this.selectedComment.isHidden, this.selectedComment.reviewId).subscribe(
+    (response: any) => {
+      console.log(response);
+      this.getReviews(this.id);
+      this.closeModal()
+    },
+    (error) => {
+      console.log(error);
+    });
+}
+
+formatDate(date: any) {
+  const format = 'dd/MM/yyyy hh:mm a';
+  const locale = 'en-US';
+  return formatDate(date, format, locale);
 }
 
 inputValidation(rating: number, comment: string) {
@@ -87,14 +115,26 @@ inputValidation(rating: number, comment: string) {
 }
 
 getReviews(id: number) {
-  this.expressService.getPlaylistComments(id).subscribe(
-    (response: any) => {
-      this.comments = response;
-      console.log(response);
-    },
-    (error) => {
-      console.log(error);
-    });
+  console.log(this.authService.role.admin);
+  if (this.authService.role.admin === true){
+    this.expressService.getPlaylistAllComments(id).subscribe(
+      (response: any) => {
+        this.comments = response;
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      });
+  } else {
+    this.expressService.getPlaylistComments(id).subscribe(
+      (response: any) => {
+        this.comments = response;
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      });
+  }
 }
 
 viewReviews(){

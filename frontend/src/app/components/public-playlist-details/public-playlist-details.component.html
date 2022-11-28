@@ -42,13 +42,22 @@
       </button>
     </div>
     <ul class="list-group">
-      <li class="list-group-item">
+      <li *ngFor="let review of comments" class="list-group-item">
         <div>
-          Name
+          Username: {{review.username}}
         </div>
         <div>
-          Review
+          Review: {{review.review}}
         </div>
+        <div>
+          Rating: {{review.rating}}
+        </div>
+        <div>
+          Date: {{formatDate(review.createdAtDate)}}
+        </div>
+        <button class="btn btn-primary" *ngIf="this.getRole()" (click)="confirmHide(commentConfirm, review)">
+          {{review.isHidden ? "Unhide" : "Hide"}}
+        </button>
       </li>
     </ul>
 </div>
@@ -84,6 +93,23 @@
     </table>
   </div>
 </div>
+
+<ng-template #commentConfirm>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Are you sure?</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline-primary" (click)="closeModal()">
+      Cancel
+    </button>
+    <button class="btn btn-primary" (click)="hideComment()">
+      {{this.selectedComment.isHidden ? "Unhide" : "Hide"}}
+    </button>
+  </div>
+</ng-template>
 
 
 <ng-template #template>

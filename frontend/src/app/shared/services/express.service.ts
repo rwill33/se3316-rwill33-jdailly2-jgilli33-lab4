@@ -34,11 +34,19 @@ export class ExpressService {
     return this.http.get("http://localhost:3000/api/publicPlaylists");
   }
 
-  getPlaylistComments(playlistId: any) {
+  getPlaylistAllComments(playlistId: any) {
     return this.http.get("http://localhost:3000/api/comment/" + playlistId);
+  }
+
+  getPlaylistComments(playlistId: any) {
+    return this.http.get("http://localhost:3000/api/publicComments/" + playlistId);
   }
 
   addPlaylistReview(playlistId: any, uid: string, username: string, review: string, rating: number) {
     return this.http.put("http://localhost:3000/api/comment/" + playlistId, {playlistId: playlistId, uid: uid, username: username, review: review, rating: rating})
+  }
+
+  hideReview(isHidden: any, reviewId: any) {
+    return this.http.post("http://localhost:3000/api/comment", {isHidden: isHidden, reviewId: reviewId})
   }
 }

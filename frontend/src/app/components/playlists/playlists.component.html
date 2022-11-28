@@ -3,7 +3,9 @@
     <div class="col-md-5 col-lg-4">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="addon-wrapping">
-        <span class="input-group-text" id="addon-wrapping">@</span>
+        <span class="input-group-text" id="addon-wrapping"><span class="material-symbols-outlined">
+          search
+          </span></span>
       </div>
     </div>
     <div class="col-md-4 col-lg-5"></div>
@@ -23,6 +25,7 @@
       </div>
     </div>
   </div>
+  <router-outlet></router-outlet>
 </div>
 
 
@@ -38,9 +41,12 @@
       <input type="text" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Playlist Name" aria-label="Playlist Name" aria-describedby="addon-wrapping" #playlistName required>
       <div [textContent]="this.errorMessage" class="invalid-feedback"></div>
     </div>
+    <div class="input-group">
+      <textarea class="form-control" placeholder="Description" aria-label="With textarea" #description></textarea>
+    </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value)">
+    <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value, description.value)">
       Create Playlist
     </button>
   </div>

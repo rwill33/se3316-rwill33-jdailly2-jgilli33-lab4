@@ -1,23 +1,25 @@
-<app-navbar></app-navbar>
+<div style="height: 100%; display: flex; flex-direction: column;">
+  <div style="flex-shrink: 0;">
+    <app-navbar></app-navbar>
+  </div>
 <!-- Sidebar navigation -->
-<div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-2 d-md-block bg-light sidebar">
+  <div class="row" style="display: flex; height: 100%; overflow: auto;">
+    <nav class="col-md-2 d-md-block bg-light sidebar" style="height: 100%;">
       <div class="sidebar-sticky">
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a [ngClass]="this.accountActive ? 'nav-link active' : 'nav-link'" routerLink="/dashboard">
+            <a routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}" routerLink="/dashboard">
               Account
             </a>
           </li>
           <li class="nav-item">
-            <a [ngClass]="this.playlistsActive ? 'nav-link active' : 'nav-link'" routerLink="playlists">
+            <a routerLinkActive="active" class="nav-link" routerLink="playlists">
               Playlists
             </a>
           </li>
           <!-- Calling SignOut() Api from AuthService -->
           <li class="nav-item" *ngIf="authService.role.admin">
-            <a [ngClass]="this.adminActive ? 'nav-link active' : 'nav-link'" routerLink="admin">
+            <a routerLinkActive="active" class="nav-link" routerLink="admin">
               Admin
             </a>
           </li>
@@ -25,10 +27,9 @@
       </div>
     </nav>
     <!-- Main content -->
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <app-account *ngIf="this.accountActive"></app-account>
-      <app-playlists *ngIf="this.playlistsActive"></app-playlists>
-      <app-admin *ngIf="this.adminActive"></app-admin>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 main">
+      <router-outlet></router-outlet>
     </main>
   </div>
 </div>
+

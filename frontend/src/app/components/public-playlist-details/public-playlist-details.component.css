@@ -7,7 +7,11 @@
   background-color: #E8E8E8;
   display: flex;
   align-items: center;
-  width: 16rem !important;
+}
+
+.comments{
+  background-color: white;
+  border-radius: 0;
 }
 
 img{

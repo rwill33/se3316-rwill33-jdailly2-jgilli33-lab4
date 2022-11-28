@@ -1,6 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'firebase/auth';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ExpressService } from 'src/app/shared/services/express.service';
 import { Playlist } from '../../shared/services/playlist';
 
@@ -14,11 +16,14 @@ export class PlaylistsComponent implements OnInit {
   error?: boolean;
   errorMessage?: string;
   playlists?: Playlist[];
+  user?: User;
   constructor(
     private modalService: BsModalService,
     private expressService: ExpressService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
+    this.user = this.authService.user;
     this.modalService.onHidden.subscribe(() => {
       this.error = false;
       this.errorMessage = "";
@@ -42,8 +47,13 @@ export class PlaylistsComponent implements OnInit {
   closeModal() {
     this.modalRef?.hide();
   }
-  inputValidation(playlistName: string) {
-    this.expressService.createPlaylist(playlistName).subscribe(
+  inputValidation(playlistName: string, description: string) {
+    if (playlistName === "") {
+      this.error = true;
+      this.errorMessage = "Please enter a playlist name.";
+      return;
+    }
+    this.expressService.createPlaylist(playlistName, description, this.user?.uid).subscribe(
     (response: any) => {
       this.playlists = response;
       this.closeModal();

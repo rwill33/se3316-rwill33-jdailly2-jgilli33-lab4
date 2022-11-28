@@ -1,0 +1,21 @@
+.container{
+  height: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  overflow: auto;
+}
+
+.card {
+  background-color: #E8E8E8;
+  cursor: pointer;
+  width:200px !important;
+}
+
+img{
+  width:150px;
+  height:150px;
+}
+
+.col{
+  margin: 10px 0;
+}

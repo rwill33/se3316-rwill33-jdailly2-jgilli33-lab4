@@ -51,8 +51,12 @@ router.route('/genres')
   router.route('/tracks/:name')
   .get(async (req, res) => {
     const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const query = "SELECT * FROM tracks WHERE artistName =?;";
-          connection.query(query,[name], (err, rows, fields) => {
+    name2 = '%'+name+'%';
+    console.log(name2);
+   
+    const query = "SELECT * FROM tracks WHERE artistName LIKE ? OR trackTitle LIKE ? OR trackGenres LIKE ?;";
+    // 
+          connection.query(query,[name2,name2,name2], (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
             } else {
@@ -62,7 +66,9 @@ router.route('/genres')
                 tracks.push({
                   name: track.artistName,
                   title: track.trackTitle,
+               //   genre: track.trackGenres
                   
+          
               })})
               res.send(tracks);
             }

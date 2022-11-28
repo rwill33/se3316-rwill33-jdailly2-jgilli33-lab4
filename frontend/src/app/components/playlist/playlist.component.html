@@ -13,9 +13,12 @@
     </div>
     <div style="width: 100%;">
         <div class="details">
-          <h3 class="playlist-name">
-            {{playlist?.playlistName}}
-          </h3>
+          <div style="display: flex; gap: 30px; align-items: center;">
+            <h3 class="playlist-name">
+              {{playlist?.playlistName}}
+            </h3>
+            <button style="height: 30%;" class="btn btn-primary" (click)="openModal(template)">Edit</button>
+          </div>
           <div>
             {{playlist?.description}}
           </div>
@@ -66,3 +69,27 @@
     </tbody>
   </table>
 </div>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Playlist</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group has-validation mb-4">
+      <input type="text" [defaultValue]="this.playlist?.playlistName" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Playlist Name" aria-label="Playlist Name" aria-describedby="addon-wrapping" #playlistName required>
+      <div [textContent]="this.errorMessage" class="invalid-feedback"></div>
+    </div>
+    <div class="input-group">
+      <textarea class="form-control" [defaultValue]="this.playlist?.description ? this.playlist?.description : '' " placeholder="Description" aria-label="With textarea" #description></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value, description.value)">
+      Save
+    </button>
+  </div>
+</ng-template>

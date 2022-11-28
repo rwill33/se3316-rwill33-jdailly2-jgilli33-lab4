@@ -218,14 +218,34 @@ router.route('/playlists')
   })
   // Add to playlist
   .post(async (req, res) => {
-    // const body = req.body;
-    connection.query(`UPDATE UserPlaylists SET isPublic=${req.body.isPublic} WHERE playlistId='${req.body.playlistId}'`, (err, rows, fields) => {
-      if (err) {
-        res.status(500).send(`Error Updating Playlist.`);
+    if (req.body.isPublic){
+      connection.query(`UPDATE UserPlaylists SET isPublic=${req.body.isPublic} WHERE playlistId='${req.body.playlistId}'`, (err, rows, fields) => {
+        if (err) {
+          res.status(500).send(`Error Updating Playlist.`);
+        } else {
+          res.send(rows);
+        }
+      });
+    } else {
+      if(req.body.description) {
+        connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description='${req.body.description}' WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
+          if (err) {
+            res.status(500).send(`Error Updating Playlist.`);
+          } else {
+            res.send(rows);
+          }
+        });
       } else {
-        res.send(rows);
+        connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description=null WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
+          if (err) {
+            res.status(500).send(`Error Updating Playlist.`);
+          } else {
+            res.send(rows);
+          }
+        });
       }
-    });
+    }
+
   })
   // Delete Playlist
   .delete(async (req, res) => {

@@ -14,6 +14,10 @@ export class ExpressService {
     return this.http.put("http://localhost:3000/api/playlists", {name: playlistName, description: description, uid: uid});
   }
 
+  editPlaylist(playlistName: string, description: string, playlistId: any) {
+    return this.http.post("http://localhost:3000/api/playlists", {name: playlistName, description: description ==="" ? null : description, playlistId: playlistId});
+  }
+
   getUserPlaylists() {
     return this.http.get("http://localhost:3000/api/playlists");
   }

@@ -36,6 +36,11 @@ import { AlertComponent } from './components/alert/alert.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { PlaylistsComponent } from './components/playlists/playlists.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { ContainerComponent } from './components/container/container.component';
+import { PublicPlaylistDetailsComponent } from './components/public-playlist-details/public-playlist-details.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 
 @NgModule({
   declarations: [
@@ -57,6 +62,8 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     AdminComponent,
     PlaylistsComponent,
     PlaylistComponent,
+    ContainerComponent,
+    PublicPlaylistDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +76,9 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    CollapseModule.forRoot(),
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

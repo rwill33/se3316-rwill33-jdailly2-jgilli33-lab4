@@ -1,0 +1,138 @@
+<div class="container">
+  <div class="back-button">
+      <span class="material-symbols-outlined" routerLink="../">
+        arrow_back_ios
+        </span>
+  </div>
+  <div class="header">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <img src="../../../assets/musicicon.jpeg" class="card-img-top" alt="...">
+      </div>
+    </div>
+    <div style="width: 100%;">
+        <div class="details">
+          <h3 class="playlist-name">
+            {{playlist?.playlistName}}
+          </h3>
+          <div>
+            {{playlist?.description}}
+          </div>
+        </div>
+        <div class="details" style="margin-top: 16px;">
+          <div class="user-name">
+            {{username}}
+          </div>
+        </div>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: end; padding: 20px 0;">
+    <button type="button" [ngClass]="!isTracksCollapsed ? 'btn btn-primary' : 'btn btn-outline-primary'" (click)="viewTracks()"
+        [attr.aria-expanded]="!isTracksCollapsed" aria-controls="collapseTracks">View Tracks
+    </button>
+    <button type="button" [ngClass]="!isReviewsCollapsed ? 'btn btn-primary' : 'btn btn-outline-primary'" (click)="viewReviews()"
+        [attr.aria-expanded]="!isReviewsCollapsed" aria-controls="collapseReviews">View Reviews
+    </button>
+    <hr>
+  </div>
+  <div id="collapseReviews" [collapse]="isReviewsCollapsed" style="width: 100%; margin-top: 16px; margin-bottom: 16px;">
+    <div style="display: flex; justify-content: end; margin-bottom: 16px;">
+      <button class="btn btn-primary" (click)="openModal(template)">
+        Add Review
+      </button>
+    </div>
+    <ul class="list-group">
+      <li *ngFor="let review of comments" class="list-group-item">
+        <div>
+          Username: {{review.username}}
+        </div>
+        <div>
+          Review: {{review.review}}
+        </div>
+        <div>
+          Rating: {{review.rating}}
+        </div>
+        <div>
+          Date: {{formatDate(review.createdAtDate)}}
+        </div>
+        <button class="btn btn-primary" *ngIf="this.getRole()" (click)="confirmHide(commentConfirm, review)">
+          {{review.isHidden ? "Unhide" : "Hide"}}
+        </button>
+      </li>
+    </ul>
+</div>
+  <div id="collapseTracks" [collapse]="isTracksCollapsed" style="width: 100%; margin-top: 16px; margin-bottom: 16px;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Handle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #commentConfirm>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Are you sure?</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline-primary" (click)="closeModal()">
+      Cancel
+    </button>
+    <button class="btn btn-primary" (click)="hideComment()">
+      {{this.selectedComment.isHidden ? "Unhide" : "Hide"}}
+    </button>
+  </div>
+</ng-template>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add Review</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group has-validation mb-4">
+      <label for="customRange2" class="form-label">Rating: {{this.rating}}</label>
+      <input type="range" class="form-range" min="1" max="5" id="customRange2" [value]="this.rating" (change)="handleRatingChange($event)">
+      <!-- <input type="text" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Playlist Name" aria-label="Playlist Name" aria-describedby="addon-wrapping" #playlistName required>
+      <div [textContent]="this.errorMessage" class="invalid-feedback"></div> -->
+    </div>
+    <div class="input-group">
+      <textarea class="form-control" placeholder="Comment" aria-label="With textarea" #comment></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="inputValidation(this.rating, comment.value)">
+      Add Review
+    </button>
+  </div>
+</ng-template>

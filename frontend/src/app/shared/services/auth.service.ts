@@ -36,6 +36,7 @@ export class AuthService {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
+        console.log(user);
         const ref = this.db.object('users/' + user.uid);
         ref.query.ref.on('value', (snapshot) => {
           const role = snapshot.val();
@@ -43,7 +44,8 @@ export class AuthService {
             ref.set(
               {admin: false,
               username: user.displayName,
-              email: user.email
+              email: user.email,
+              isDisabled: false,
               }
             );
             localStorage.setItem('role', JSON.stringify({admin: false}));
@@ -58,7 +60,7 @@ export class AuthService {
         JSON.parse(localStorage.getItem('role')!);
       } else {
         localStorage.setItem('user', 'null');
-        localStorage.setItem('role', 'null')
+        localStorage.setItem('role', 'null');
         JSON.parse(localStorage.getItem('user')!);
         JSON.parse(localStorage.getItem('role')!);
       }
@@ -170,6 +172,9 @@ export class AuthService {
         this.SetUserData(result.user);
       })
       .catch((error) => {
+        if( error.code === "auth/user-disabled") {
+          console.log("disabled");
+        }
         window.alert(error);
       });
   }

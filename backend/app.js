@@ -22,12 +22,57 @@ app.use((req, res, next) => {
   next();
 })
 
+
+const admin = require("firebase-admin");
+const auth = require('firebase-admin/auth');
+const fb = require('firebase/app');
+const realtime = require('firebase/database')
+const fbapp = fb.initializeApp({
+  apiKey: "AIzaSyCTLGFrqn1NOrtUQMN7WITJBSve7vrj7VQ",
+  authDomain: "rwill33-lab4.firebaseapp.com",
+  projectId: "rwill33-lab4",
+  storageBucket: "rwill33-lab4.appspot.com",
+  messagingSenderId: "724042200276",
+  appId: "1:724042200276:web:f0315b5a4fb13260cc3741",
+  measurementId: "G-J6E5PBL3P9"
+})
+
+const db = realtime.getDatabase(fbapp);
+
+var serviceAccount = require("./rwill33-lab4-firebase-adminsdk-sumr7-9360b82130.json");
+
+const adminApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://rwill33-lab4-default-rtdb.firebaseio.com"
+});
+
+
 var corsOptions = {
   origin: 'http://localhost:4200',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
 
 app.use(cors(corsOptions));
+
+
+
+router.route('/updateUser').post((req, res) => {
+  auth.getAuth().updateUser(req.body.uid, {
+    disabled: req.body.disabled,
+  })
+  .then((userRecord) => {
+    // See the UserRecord reference doc for the contents of userRecord.
+    console.log('Successfully updated user', userRecord.toJSON());
+    realtime.update(realtime.ref(db, 'users/' + req.body.uid), {
+      isDisabled: req.body.disabled
+    });
+    res.send(userRecord);
+  })
+  .catch((error) => {
+    console.log('Error updating user:', error);
+    res.status(500).send("Error updating user");
+  });
+})
 
 // Get genre names, IDs and parent IDs.
 router.route('/genres')
@@ -117,28 +162,28 @@ router.route('/artists')
     // res.send(artists);
   })
 
-router.route('/playlists/:name')
+router.route('/playlists/tracks/:id')
   // Get all tracks in a playlist
   .get(async (req, res) => {
-    // const obj = {};
-    // const trackDetailsArray = []
-    // let duration = 0;
-    // const tracks = await storage.get(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // obj['numOfTracks'] = tracks.length;
-    // await Promise.allSettled(tracks.map((element) => {
-    //   return new Promise(async (resolve) => {
-    //     const trackDetails = await dataReader.getTrackById(element);
-    //     trackDetailsArray.push(trackDetails);
-    //     let array = trackDetails.track_duration.split(":");
-    //     duration += parseInt(array[0]) + parseInt(array[1])/60;
-    //     resolve();
-    //   })
-    // }));
-    // const integ =  Math.floor(duration);
-    // const dec = Math.round((duration - integ)*60);
-    // obj['trackList'] = trackDetailsArray;
-    // obj['totalDuration'] = `${integ}:${dec}`;
-    // res.send(obj);
+    connection.query(`SELECT * FROM PlaylistTracks WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error querying Playlist Tracks`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
+
+router.route('/playlists/:id')
+  // Get all tracks in a playlist
+  .get(async (req, res) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error querying playlist details`)
+      } else {
+        res.send(rows[0]);
+      }
+    })
   })
   // Delete track from playlist
   .delete(async (req, res) => {
@@ -149,6 +194,63 @@ router.route('/playlists/:name')
     //   await storage.updateItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"), playlist);
     // }
     // res.send(await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")));
+  })
+
+  router.route('/comment')
+  .post((req, res) => {
+    console.log(req.body.isHidden);
+    connection.query(`UPDATE Reviews SET isHidden=${req.body.isHidden} WHERE reviewId='${req.body.reviewId}'`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Getting Comments.`);
+      } else {
+        res.send(rows);
+      }
+    });
+  })
+
+router.route('/publicComments/:id')
+.get((req, res) => {
+  connection.query(`SELECT * FROM Reviews WHERE playlistId='${req.params.id}' AND isHidden='false'`, (err, rows, fields) => {
+    if (err) {
+      res.status(500).send(`Error Getting Comments.`);
+    } else {
+      res.send(rows);
+    }
+  });
+})
+
+router.route('/comment/:id')
+.get((req, res) => {
+  connection.query(`SELECT * FROM Reviews WHERE playlistId='${req.params.id}'`, (err, rows, fields) => {
+    if (err) {
+      res.status(500).send(`Error Getting Comments.`);
+    } else {
+      res.send(rows);
+    }
+  });
+})
+.put((req, res) => {
+  console.log(req.body);
+  connection.query(`INSERT INTO Reviews(uid, username, playlistId, review, rating) VALUES('${req.body.uid}', '${req.body.username}', ${req.body.playlistId}, '${req.body.review}', ${req.body.rating});`, (err, rows, fields) => {
+    if (err) {
+      res.status(500).send(`Error Inserting Comment.`);
+    } else {
+      res.send(rows);
+    }
+  });
+
+})
+
+
+router.route('/publicPlaylists')
+  .get((req, res) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE isPublic=true`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Selecting Playlists.`);
+      } else {
+        res.send(rows);
+      }
+    });
   })
 
 router.route('/playlists')
@@ -164,7 +266,13 @@ router.route('/playlists')
   })
   // Create New Playlist
   .put(async (req, res) => {
-    connection.query(`INSERT INTO UserPlaylists (uid, playlistName) VALUES ('iUMOeYpLWsb8mvoxqYtWJLHPabE2', '${req.body.name}')`, (err, rows, fields) => {
+    let query;
+    if (req.body.description === "") {
+      query = `INSERT INTO UserPlaylists (uid, playlistName) VALUES ('${req.body.uid}', '${req.body.name}')`;
+    } else {
+      query = `INSERT INTO UserPlaylists (uid, playlistName, description) VALUES ('${req.body.uid}', '${req.body.name}', '${req.body.description}')`;
+    }
+    connection.query(query, (err, rows, fields) => {
       if (err) {
         if (err.errno === 1062) {
           res.status(500).send(`Playlist with that name already exists.`);
@@ -173,7 +281,7 @@ router.route('/playlists')
         }
       } else {
         console.log("Inserted");
-        connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
+        connection.query(`SELECT * FROM UserPlaylists WHERE uid='${req.body.uid}'`, (err, rows, fields) => {
           if (err) {
             res.status(500).send(`Error Selecting Playlists.`);
           } else {
@@ -182,35 +290,35 @@ router.route('/playlists')
         })
       }
     });
-    
-    
-    // const newPlaylist = req.body;
-    // const existingPlaylists = await storage.keys();
-    // let status = true;
-    // existingPlaylists.map((key) => {
-    //   if (key.toLowerCase() === newPlaylist.name.replace(/</g, "&lt;").replace(/>/g, "&gt;").toLowerCase()) {
-    //     status = false;
-    //   }
-    // });
-    // if (status) {
-    //   await storage.setItem(newPlaylist.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"), []);
-    //   res.send(await storage.data());
-    // } else {
-    //   res.status(403).send(`Playlist with id=${newPlaylist.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")} already exists.`);
-    // }
   })
   // Add to playlist
   .post(async (req, res) => {
-    // const body = req.body;
-    // const playlist = await storage.getItem(body.playlistName.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // const track = await dataReader.getTrackById(body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-
-    // if(playlist && track && playlist.indexOf(body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;")) < 0) {
-    //   await storage.updateItem(body.playlistName.replace(/</g, "&lt;").replace(/>/g, "&gt;"), [...playlist, body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;")]);
-    //   res.send(track);
-    // } else {
-    //   res.status(404).send();
-    // }
+    console.log(req.body);
+    if(req.body.description && req.body.name){
+      connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description='${req.body.description}' WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
+        if (err) {
+          res.status(500).send(`Error Updating Playlist.`);
+        } else {
+          res.send(rows);
+        }
+      });
+    } else if(req.body.name) {
+      connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description=null WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
+        if (err) {
+          res.status(500).send(`Error Updating Playlist.`);
+        } else {
+          res.send(rows);
+        }
+      });
+    } else {
+      connection.query(`UPDATE UserPlaylists SET isPublic=${req.body.isPublic} WHERE playlistId='${req.body.playlistId}'`, (err, rows, fields) => {
+        if (err) {
+          res.status(500).send(`Error Updating Playlist.`);
+        } else {
+          res.send(rows);
+        }
+      });
+    }
   })
   // Delete Playlist
   .delete(async (req, res) => {

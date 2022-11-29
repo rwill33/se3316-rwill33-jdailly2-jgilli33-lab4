@@ -10,4 +10,9 @@
 .main{
   height: 100%;
   overflow: auto;
+  padding: 0;
+}
+
+.row{
+  width: 100%;
 }

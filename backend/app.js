@@ -1,7 +1,8 @@
 const express = require("express");
 const mysql = require('mysql');
 const fs = require("fs");
-const cors = require('cors')
+const cors = require('cors');
+const { time } = require("console");
 
 const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
 const connection = mysql.createConnection(config);
@@ -66,8 +67,8 @@ router.route('/genres')
                 tracks.push({
                   name: track.artistName,
                   title: track.trackTitle,
-               //   genre: track.trackGenres
-                  
+                  genre: track.trackGenres,
+                  time: track.trackDuration
           
               })})
               res.send(tracks);

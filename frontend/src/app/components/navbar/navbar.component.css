@@ -6,3 +6,16 @@
   background-color: #00000021;
   border: 1px solid black;
 }
+
+.container{
+  margin: 8px 0;
+  width: 300px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}

@@ -18,18 +18,29 @@ artist: string = '';
 posts: any;
 artists?:Artist[];
 data:any =[];
+obj:any = [];
 ngOnInit(): void {
 
 }
 
 getArtists(){
-  console.log(this.artist)
+ //console.log(this.artist)
   this.expressService.getArtists(this.artist).subscribe(
     (response: any) => {
       this.artists = response;
      //console.log(this.artists);
       
-console.log(this.artists?.[0].artistName)
+//console.log(this.artists?.[0])
+let l =this.artist.length
+     this.obj = this.artists;
+    // console.log(this.obj.name)
+//for(let i=0; >i ;i++){
+//}
+
+
+      console.log(this.obj[2].title)
+
+//console.log(data?)
 
 //const artistnames = this.artists?.map(this.artists? => (this.artists?));
 

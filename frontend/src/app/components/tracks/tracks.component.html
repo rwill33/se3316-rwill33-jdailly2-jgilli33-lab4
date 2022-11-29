@@ -6,8 +6,37 @@
   </div>
 <div>
   <button (click) = "getArtists()">search artists</button>
+
+  <table >
+    <thead>
+      <tr>
+        <th scope="col">Artist Name</th>
+        <th scope="col">Title</th>
+        <th scope="col">genres<th>
+        <th scope="col">play-length</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let artist of obj ">
+        <th scope="row">{{ artist.name}}</th>
+        <td>{{ artist.title}}</td>
+        <td hidden></td>
+    
+      </tr>
+    </tbody>
+  </table>
+
   <!--<button (click) = "getPost()">show genres</button>
  
+<div *ngFor = "let artist of artists">
+  {{artist}}
+
+
+
+</div>
+
+
+
  
 <div *ngFor = "let post of posts | async">
   {{post | json}}

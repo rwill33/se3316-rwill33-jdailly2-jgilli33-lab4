@@ -1,7 +1,8 @@
 const express = require("express");
 const mysql = require('mysql');
 const fs = require("fs");
-const cors = require('cors')
+const cors = require('cors');
+const { time } = require("console");
 
 const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
 const connection = mysql.createConnection(config);
@@ -21,12 +22,57 @@ app.use((req, res, next) => {
   next();
 })
 
+
+const admin = require("firebase-admin");
+const auth = require('firebase-admin/auth');
+const fb = require('firebase/app');
+const realtime = require('firebase/database')
+const fbapp = fb.initializeApp({
+  apiKey: "AIzaSyCTLGFrqn1NOrtUQMN7WITJBSve7vrj7VQ",
+  authDomain: "rwill33-lab4.firebaseapp.com",
+  projectId: "rwill33-lab4",
+  storageBucket: "rwill33-lab4.appspot.com",
+  messagingSenderId: "724042200276",
+  appId: "1:724042200276:web:f0315b5a4fb13260cc3741",
+  measurementId: "G-J6E5PBL3P9"
+})
+
+const db = realtime.getDatabase(fbapp);
+
+var serviceAccount = require("./rwill33-lab4-firebase-adminsdk-sumr7-9360b82130.json");
+
+const adminApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://rwill33-lab4-default-rtdb.firebaseio.com"
+});
+
+
 var corsOptions = {
   origin: 'http://localhost:4200',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
 
 app.use(cors(corsOptions));
+
+
+
+router.route('/updateUser').post((req, res) => {
+  auth.getAuth().updateUser(req.body.uid, {
+    disabled: req.body.disabled,
+  })
+  .then((userRecord) => {
+    // See the UserRecord reference doc for the contents of userRecord.
+    console.log('Successfully updated user', userRecord.toJSON());
+    realtime.update(realtime.ref(db, 'users/' + req.body.uid), {
+      isDisabled: req.body.disabled
+    });
+    res.send(userRecord);
+  })
+  .catch((error) => {
+    console.log('Error updating user:', error);
+    res.status(500).send("Error updating user");
+  });
+})
 
 // Get genre names, IDs and parent IDs.
 router.route('/genres')
@@ -43,6 +89,35 @@ router.route('/genres')
                   parentId: genre.parentId
               })})
               res.send(genres);
+            }
+          })
+    }
+  )
+  
+  router.route('/tracks/:name')
+  .get(async (req, res) => {
+    const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    name2 = '%'+name+'%';
+    console.log(name2);
+   
+    const query = "SELECT * FROM tracks WHERE artistName LIKE ? OR trackTitle LIKE ? OR trackGenres LIKE ?;";
+    // 
+          connection.query(query,[name2,name2,name2], (err, rows, fields) => {
+            if (err) {
+              res.status(500).send(`Error querying genres`)
+            } else {
+              console.log("made it");
+              const tracks = [];
+              rows.map((track) => {
+                tracks.push({
+                  name: track.artistName,
+                  title: track.trackTitle,
+                  genre: track.trackGenres,
+                  time: track.trackDuration,
+                  year: track.trackDateCreated
+          
+              })})
+              res.send(tracks);
             }
           })
     }
@@ -218,8 +293,17 @@ router.route('/playlists')
   })
   // Add to playlist
   .post(async (req, res) => {
-    if (req.body.isPublic){
-      connection.query(`UPDATE UserPlaylists SET isPublic=${req.body.isPublic} WHERE playlistId='${req.body.playlistId}'`, (err, rows, fields) => {
+    console.log(req.body);
+    if(req.body.description && req.body.name){
+      connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description='${req.body.description}' WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
+        if (err) {
+          res.status(500).send(`Error Updating Playlist.`);
+        } else {
+          res.send(rows);
+        }
+      });
+    } else if(req.body.name) {
+      connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description=null WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
         if (err) {
           res.status(500).send(`Error Updating Playlist.`);
         } else {
@@ -227,25 +311,14 @@ router.route('/playlists')
         }
       });
     } else {
-      if(req.body.description) {
-        connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description='${req.body.description}' WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
-          if (err) {
-            res.status(500).send(`Error Updating Playlist.`);
-          } else {
-            res.send(rows);
-          }
-        });
-      } else {
-        connection.query(`UPDATE UserPlaylists SET playlistName='${req.body.name}', description=null WHERE playlistId=${req.body.playlistId}`, (err, rows, fields) => {
-          if (err) {
-            res.status(500).send(`Error Updating Playlist.`);
-          } else {
-            res.send(rows);
-          }
-        });
-      }
+      connection.query(`UPDATE UserPlaylists SET isPublic=${req.body.isPublic} WHERE playlistId='${req.body.playlistId}'`, (err, rows, fields) => {
+        if (err) {
+          res.status(500).send(`Error Updating Playlist.`);
+        } else {
+          res.send(rows);
+        }
+      });
     }
-
   })
   // Delete Playlist
   .delete(async (req, res) => {

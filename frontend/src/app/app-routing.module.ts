@@ -10,6 +10,7 @@ import {PublicPlaylistComponent} from './components/public_playlist/public-playl
 import {GenresComponent} from './components/genres/genres.component';
 import{TracksComponent} from './components/tracks/tracks.component';
 import {ArtistComponent} from './components/artist/artist.component';
+
 // route guard
 import { AuthGuard } from './shared/guard/auth.guard';
 import { PermissionGuard } from './shared/guard/permission.guard';

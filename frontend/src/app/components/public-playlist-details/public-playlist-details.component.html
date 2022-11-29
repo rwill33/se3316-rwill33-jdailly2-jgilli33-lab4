@@ -65,29 +65,16 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          <th scope="col">Track Name</th>
+          <th scope="col">Album Name</th>
+          <th scope="col">Artist Name</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
+        <tr  *ngFor="let track of tracks">
+          <th scope="row">{{track.trackTitle}}</th>
+          <td>{{track.albumTitle}}</td>
+          <td>{{track.artistName}}</td>
         </tr>
       </tbody>
     </table>

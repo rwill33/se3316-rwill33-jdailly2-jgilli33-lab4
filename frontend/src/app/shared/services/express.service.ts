@@ -38,6 +38,10 @@ export class ExpressService {
     return this.http.get("http://localhost:3000/api/playlists/tracks/" + id);
   }
 
+  addTrackToPlaylist(trackId: any, playlistId: any) {
+    return this.http.put("http://localhost:3000/api/playlists/tracks/" + playlistId, {trackId: trackId})
+  }
+
   changePlaylistPublic(id: number, isPublic: boolean) {
     return this.http.post("http://localhost:3000/api/playlists", {isPublic: isPublic, playlistId: id});
   }

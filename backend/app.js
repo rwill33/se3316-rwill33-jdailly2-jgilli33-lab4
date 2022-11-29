@@ -110,6 +110,7 @@ router.route('/genres')
               const tracks = [];
               rows.map((track) => {
                 tracks.push({
+                  id: track.trackId,
                   name: track.artistName,
                   title: track.trackTitle,
                   genre: track.trackGenres,
@@ -165,9 +166,18 @@ router.route('/artists')
 router.route('/playlists/tracks/:id')
   // Get all tracks in a playlist
   .get(async (req, res) => {
-    connection.query(`SELECT * FROM PlaylistTracks WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+    connection.query(`SELECT t.* FROM PlaylistTracks pt JOIN Tracks t WHERE pt.trackId = t.trackId AND playlistId=${req.params.id}`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error querying Playlist Tracks`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
+  .put((req, res) => {
+    connection.query(`INSERT INTO PlaylistTracks(playlistId, trackId) VALUES(${req.params.id}, ${req.body.trackId});`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Inserting Playlist Track.`)
       } else {
         res.send(rows);
       }

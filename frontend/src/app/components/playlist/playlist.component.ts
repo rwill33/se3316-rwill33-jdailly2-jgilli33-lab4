@@ -13,13 +13,14 @@ import { Playlist } from 'src/app/shared/services/playlist';
 })
 export class PlaylistComponent implements OnInit {
   playlist?: Playlist;
-  tracks?: any;
+  tracks?: any[];
   username?: string;
   private routeSub: Subscription;
   id: number;
   modalRef?: BsModalRef;
   error?: boolean;
   errorMessage?: string;
+  artists?:any[];
 
     constructor(
       private route: ActivatedRoute,
@@ -32,6 +33,7 @@ export class PlaylistComponent implements OnInit {
         this.modalService.onHidden.subscribe(() => {
           this.error = false;
           this.errorMessage = "";
+          this.artists = [];
         })
     }
 
@@ -116,5 +118,35 @@ export class PlaylistComponent implements OnInit {
       this.getPlaylist(this.id);
     }
 
+    searchTracks(search: string){
+      console.log(search);
+      this.expressService.getArtists(search).subscribe(
+        (response: any) => {
+          const res = response.splice(0,10);
+          res.forEach((element:any) => {
+            if (this.tracks?.find((track) => track.trackId === element.id)) {
+              element['isInPlaylist'] = true;
+            } else{
+              element['isInPlaylist'] = false;
+            }
+          });
+          console.log(res);
+          this.artists = res;
+        },
+        (error) => {
+          console.log(error);
+        });
+    }
 
+    addTrack(trackId: any) {
+      this.expressService.addTrackToPlaylist(trackId, this.playlist?.playlistId).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.getPlaylistTracks(this.id);
+          this.closeModal();
+        },
+        (error) => {
+          console.log(error);
+        });
+    }
 }

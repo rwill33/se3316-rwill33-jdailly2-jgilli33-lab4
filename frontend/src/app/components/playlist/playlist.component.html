@@ -35,36 +35,23 @@
     </div>
   </div>
   <div style="display: flex; justify-content: end; padding: 20px 0;">
-    <button class="btn btn-outline-dark">
+    <button class="btn btn-outline-dark" (click)="openModal(tracksTemplate)">
       Add Track
     </button>
   </div>
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Track Name</th>
+        <th scope="col">Album Name</th>
+        <th scope="col">Artist Name</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
+      <tr  *ngFor="let track of tracks">
+        <th scope="row">{{track.trackTitle}}</th>
+        <td>{{track.albumTitle}}</td>
+        <td>{{track.artistName}}</td>
       </tr>
     </tbody>
   </table>
@@ -91,5 +78,41 @@
     <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value, description.value)">
       Save
     </button>
+  </div>
+</ng-template>
+
+<ng-template #tracksTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Search</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search" aria-label="Track Search" aria-describedby="addon-wrapping" #search>
+      <button class="btn btn-primary" (click)="searchTracks(search.value)">
+        Search
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Track Name</th>
+          <th scope="col">Artist Name</th>
+          <th scope="col">Add</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr  *ngFor="let artist of artists ">
+          <td>{{ artist.title}}</td>
+          <td>{{ artist.name}}</td>
+          <td><button *ngIf="!artist.isInPlaylist" class="btn btn-primary" (click)="addTrack(artist.id)">Add</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+
   </div>
 </ng-template>

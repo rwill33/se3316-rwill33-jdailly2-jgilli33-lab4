@@ -13,11 +13,12 @@
     </div>
     <div style="width: 100%;">
         <div class="details">
-          <div style="display: flex; gap: 30px; align-items: center;">
+          <div style="display: flex; align-items: center;">
             <h3 class="playlist-name">
               {{playlist?.playlistName}}
             </h3>
-            <button style="height: 30%;" class="btn btn-primary" (click)="openModal(template)">Edit</button>
+            <button style="height: 30%; margin-left: 40px;" class="btn btn-primary" (click)="openModal(template)">Edit</button>
+            <button style="height: 30%;" class="btn btn-outline-primary" (click)="openModal(deleteTemplate)">Delete</button>
           </div>
           <div>
             {{playlist?.description}}
@@ -79,6 +80,23 @@
   <div class="modal-footer">
     <button class="btn btn-primary" (click)="this.inputValidation(playlistName.value, description.value)">
       Save
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Are you sure?</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="this.closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline-primary" (click)="this.closeModal()">
+      Cancel
+    </button>
+    <button class="btn btn-primary" (click)="deletePlaylist()">
+      Delete
     </button>
   </div>
 </ng-template>

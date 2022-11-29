@@ -206,13 +206,13 @@ router.route('/playlists/:id')
   })
   // Delete track from playlist
   .delete(async (req, res) => {
-    // const playlist = await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // const index = playlist.indexOf(req.body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // playlist.splice(index, 1);
-    // if (index > -1) {
-    //   await storage.updateItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"), playlist);
-    // }
-    // res.send(await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")));
+    connection.query(`DELETE FROM UserPlaylists WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error deleting playlist details`)
+      } else {
+        res.send(rows[0]);
+      }
+    })
   })
 
   router.route('/comment')

@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { ExpressService } from 'src/app/shared/services/express.service';
@@ -27,6 +27,7 @@ export class PlaylistComponent implements OnInit {
       private expressService: ExpressService,
       private db: AngularFireDatabase,
       private modalService: BsModalService,
+      private router: Router
       ) {
         this.routeSub = Subscription.EMPTY;
         this.id = -1;
@@ -110,12 +111,11 @@ export class PlaylistComponent implements OnInit {
       this.expressService.changePlaylistPublic(id, data.target.checked).subscribe(
         (response: any) => {
           console.log(response);
-          this.tracks = response;
+          this.getPlaylist(this.id);
         },
         (error) => {
           console.log(error);
         });
-      this.getPlaylist(this.id);
     }
 
     searchTracks(search: string){
@@ -155,6 +155,18 @@ export class PlaylistComponent implements OnInit {
         (response: any) => {
           console.log(response);
           this.getPlaylistTracks(this.id);
+        },
+        (error) => {
+          console.log(error);
+        });
+    }
+
+    deletePlaylist() {
+      this.expressService.deletePlaylist(this.id).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.closeModal();
+          this.router.navigate(['/dashboard/playlists']);
         },
         (error) => {
           console.log(error);

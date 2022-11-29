@@ -21,12 +21,57 @@ app.use((req, res, next) => {
   next();
 })
 
+
+const admin = require("firebase-admin");
+const auth = require('firebase-admin/auth');
+const fb = require('firebase/app');
+const realtime = require('firebase/database')
+const fbapp = fb.initializeApp({
+  apiKey: "AIzaSyCTLGFrqn1NOrtUQMN7WITJBSve7vrj7VQ",
+  authDomain: "rwill33-lab4.firebaseapp.com",
+  projectId: "rwill33-lab4",
+  storageBucket: "rwill33-lab4.appspot.com",
+  messagingSenderId: "724042200276",
+  appId: "1:724042200276:web:f0315b5a4fb13260cc3741",
+  measurementId: "G-J6E5PBL3P9"
+})
+
+const db = realtime.getDatabase(fbapp);
+
+var serviceAccount = require("./rwill33-lab4-firebase-adminsdk-sumr7-9360b82130.json");
+
+const adminApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://rwill33-lab4-default-rtdb.firebaseio.com"
+});
+
+
 var corsOptions = {
   origin: 'http://localhost:4200',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
 
 app.use(cors(corsOptions));
+
+
+
+router.route('/updateUser').post((req, res) => {
+  auth.getAuth().updateUser(req.body.uid, {
+    disabled: req.body.disabled,
+  })
+  .then((userRecord) => {
+    // See the UserRecord reference doc for the contents of userRecord.
+    console.log('Successfully updated user', userRecord.toJSON());
+    realtime.update(realtime.ref(db, 'users/' + req.body.uid), {
+      isDisabled: req.body.disabled
+    });
+    res.send(userRecord);
+  })
+  .catch((error) => {
+    console.log('Error updating user:', error);
+    res.status(500).send("Error updating user");
+  });
+})
 
 // Get genre names, IDs and parent IDs.
 router.route('/genres')

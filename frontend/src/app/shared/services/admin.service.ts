@@ -11,37 +11,32 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FirebaseError } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-
+  users?: Observable<any>;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public db: AngularFireDatabase,
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone, // NgZone service to remove outside scope warning
+    private http: HttpClient
   ) {
-
+    this.users = this.db.object('users').valueChanges();
   }
   GetUsers() {
-    const users: any = [];
-    const ref = this.db.object('users');
-    ref.query.ref.on('value', (snapshot) => {
-      snapshot.forEach((snapshot) => {
-        let user = snapshot.val();
-        user['uid'] = snapshot.key;
-        users.push(user);
-      })
-    }, (errorObject) => {
-      console.log('The read failed: ' + errorObject.name);
-    });
-    return users;
+    return this.users;
   }
   ChangeUserPermission(admin: boolean, uid: string) {
     const ref = this.db.object('users/' + uid);
     ref.update({admin: admin});
+  }
+
+  setDisabled(isDisabled: boolean, uid: string) {
+     return this.http.post("http://localhost:3000/api/updateUser", {disabled: isDisabled, uid: uid});
   }
 }

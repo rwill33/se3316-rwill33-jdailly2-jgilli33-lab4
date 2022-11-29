@@ -22,6 +22,14 @@ export class ExpressService {
     return this.http.get("http://localhost:3000/api/playlists");
   }
 
+  getGenres(){
+    return this.http.get("http://localhost:3000/api/genres")
+  }
+  getArtists(artist:string){
+    return this.http.get("http://localhost:3000/api/tracks/" + artist);
+  }
+
+
   getPlaylistById(id: number) {
     return this.http.get("http://localhost:3000/api/playlists/" + id);
   }

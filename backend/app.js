@@ -1,7 +1,8 @@
 const express = require("express");
 const mysql = require('mysql');
 const fs = require("fs");
-const cors = require('cors')
+const cors = require('cors');
+const { time } = require("console");
 
 const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
 const connection = mysql.createConnection(config);
@@ -88,6 +89,35 @@ router.route('/genres')
                   parentId: genre.parentId
               })})
               res.send(genres);
+            }
+          })
+    }
+  )
+  
+  router.route('/tracks/:name')
+  .get(async (req, res) => {
+    const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    name2 = '%'+name+'%';
+    console.log(name2);
+   
+    const query = "SELECT * FROM tracks WHERE artistName LIKE ? OR trackTitle LIKE ? OR trackGenres LIKE ?;";
+    // 
+          connection.query(query,[name2,name2,name2], (err, rows, fields) => {
+            if (err) {
+              res.status(500).send(`Error querying genres`)
+            } else {
+              console.log("made it");
+              const tracks = [];
+              rows.map((track) => {
+                tracks.push({
+                  name: track.artistName,
+                  title: track.trackTitle,
+                  genre: track.trackGenres,
+                  time: track.trackDuration,
+                  year: track.trackDateCreated
+          
+              })})
+              res.send(tracks);
             }
           })
     }

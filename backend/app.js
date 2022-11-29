@@ -110,6 +110,7 @@ router.route('/genres')
               const tracks = [];
               rows.map((track) => {
                 tracks.push({
+                  id: track.trackId,
                   name: track.artistName,
                   title: track.trackTitle,
                   genre: track.trackGenres,
@@ -165,9 +166,27 @@ router.route('/artists')
 router.route('/playlists/tracks/:id')
   // Get all tracks in a playlist
   .get(async (req, res) => {
-    connection.query(`SELECT * FROM PlaylistTracks WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+    connection.query(`SELECT t.* FROM PlaylistTracks pt JOIN Tracks t WHERE pt.trackId = t.trackId AND playlistId=${req.params.id}`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error querying Playlist Tracks`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
+  .put((req, res) => {
+    connection.query(`INSERT INTO PlaylistTracks(playlistId, trackId) VALUES(${req.params.id}, ${req.body.trackId});`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Inserting Playlist Track.`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
+  .delete((req, res) => {
+    connection.query(`DELETE FROM PlaylistTracks WHERE playlistId=${req.params.id} AND trackId=${req.body.trackId};`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error deleting track from playlist.`)
       } else {
         res.send(rows);
       }
@@ -187,13 +206,13 @@ router.route('/playlists/:id')
   })
   // Delete track from playlist
   .delete(async (req, res) => {
-    // const playlist = await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // const index = playlist.indexOf(req.body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // playlist.splice(index, 1);
-    // if (index > -1) {
-    //   await storage.updateItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"), playlist);
-    // }
-    // res.send(await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")));
+    connection.query(`DELETE FROM UserPlaylists WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error deleting playlist details`)
+      } else {
+        res.send(rows[0]);
+      }
+    })
   })
 
   router.route('/comment')

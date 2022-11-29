@@ -68,7 +68,8 @@ router.route('/genres')
                   name: track.artistName,
                   title: track.trackTitle,
                   genre: track.trackGenres,
-                  time: track.trackDuration
+                  time: track.trackDuration,
+                  year: track.trackDateCreated
           
               })})
               res.send(tracks);

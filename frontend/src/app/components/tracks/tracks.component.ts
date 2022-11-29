@@ -22,20 +22,22 @@ obj:any = [];
 isOn:boolean = false;
 isHidden:boolean = true;
 showMe:boolean= false;
-
+p:any 
 ngOnInit(): void {
   
 }
 
 getArtists(){
- //console.log(this.artist)
+ 
   this.expressService.getArtists(this.artist).subscribe(
     (response: any) => {
       this.artists = response;
-     //console.log(this.artists);
+    
      this.obj = this.artists;
-      console.log(this.obj[2].title)
-      
+ 
+
+      //Need to parse the genres object but do that later
+
     if(this.isOn === true){
       this.showMe = true;
     }else{
@@ -65,8 +67,8 @@ this.posts =this.http.get("http://localhost:3000/api/tracks/"+this.artist)
   showDetails(){
     console.log("made it to the function")
   }
-  playSongOnyoutube(){
-    window.open("https://www.youtube.com/results?search_query=Electric Ave")
+  playSongOnyoutube(title:string){
+    window.open("https://www.youtube.com/results?search_query="+ title)
   }
 
   constructor(private http:HttpClient,

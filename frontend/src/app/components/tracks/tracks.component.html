@@ -7,13 +7,15 @@
 <div>
   <button (click) = "getArtists()">search artists</button>
   <input type="checkbox" id="switch" [(ngModel)] = "isOn"/><label for="switch">display more info</label>
-  <table >
+  <!--
+  <table class = "displayInfo" >
     <thead>
       <tr>
         <th scope="col">Artist Name</th>
         <th scope="col">Title</th>
         <th scope="col"  *ngIf="showMe" >genres<th>
         <th scope="col"  *ngIf="showMe">play-length</th>
+        
       </tr>
     </thead>
     <tbody>
@@ -22,7 +24,35 @@
         <td>{{ artist.title}}</td>
         <td *ngIf="showMe">{{artist.genre}}</td>
         <td *ngIf="showMe">{{artist.time}}</td>
-    
+        <button (click)="playSongOnyoutube(artist.title)">Play song on youtube</button>
+      </tr>
+      
+    </tbody>
+  </table>
+-->
+
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Artist Name</th>
+        <th scope="col">Title</th>
+        <th scope="col" *ngIf="showMe">genres</th>
+        <th scope="col" *ngIf="showMe">play-length</th>
+        <th scope="col" *ngIf="showMe">year</th>
+        <th scope="col">youtube</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr  *ngFor="let artist of obj ">
+        
+        
+        <td>{{ artist.name}}</td>
+        <td>{{ artist.title}}</td>
+        <td *ngIf="showMe">{{artist.genre}}</td>
+        <td  *ngIf="showMe">{{artist.time}}</td>
+        <td  *ngIf="showMe">{{artist.year}}</td>
+        <td>   <button (click)="playSongOnyoutube(artist.title)">Play song on youtube</button> </td>
       </tr>
     </tbody>
   </table>

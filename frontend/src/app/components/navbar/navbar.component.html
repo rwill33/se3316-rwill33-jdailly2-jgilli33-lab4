@@ -35,7 +35,7 @@
             account_circle
             </span>
           </span>
-        <button [routerLink]="'/dashboard'"  [ngClass]="'btn btn-outline-dark'">Account</button>
+        <button [routerLink]="'/dashboard'"  [ngClass]="'btn btn-outline-dark'">{{this.isAdmin}}</button>
         </div>
         <button [routerLink]="'/'" [ngClass]="'btn btn-dark text-nowrap'" (click)="authService.SignOut()" >Log Out</button>
       </div>

@@ -39,7 +39,11 @@ export class ExpressService {
   }
 
   addTrackToPlaylist(trackId: any, playlistId: any) {
-    return this.http.put("http://localhost:3000/api/playlists/tracks/" + playlistId, {trackId: trackId})
+    return this.http.put("http://localhost:3000/api/playlists/tracks/" + playlistId, {trackId: trackId});
+  }
+
+  deleteTrackFromPlaylist(trackId: any, playlistId: any) {
+    return this.http.delete("http://localhost:3000/api/playlists/tracks/" + playlistId, {body: {trackId: trackId}});
   }
 
   changePlaylistPublic(id: number, isPublic: boolean) {

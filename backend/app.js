@@ -183,6 +183,15 @@ router.route('/playlists/tracks/:id')
       }
     })
   })
+  .delete((req, res) => {
+    connection.query(`DELETE FROM PlaylistTracks WHERE playlistId=${req.params.id} AND trackId=${req.body.trackId};`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error deleting track from playlist.`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
 
 router.route('/playlists/:id')
   // Get all tracks in a playlist

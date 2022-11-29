@@ -149,4 +149,15 @@ export class PlaylistComponent implements OnInit {
           console.log(error);
         });
     }
+
+    deleteTrack(trackId: any) {
+      this.expressService.deleteTrackFromPlaylist(trackId, this.playlist?.playlistId).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.getPlaylistTracks(this.id);
+        },
+        (error) => {
+          console.log(error);
+        });
+    }
 }

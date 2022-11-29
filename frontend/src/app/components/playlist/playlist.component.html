@@ -45,6 +45,7 @@
         <th scope="col">Track Name</th>
         <th scope="col">Album Name</th>
         <th scope="col">Artist Name</th>
+        <th scope="col">Remove from playlist</th>
       </tr>
     </thead>
     <tbody>
@@ -52,6 +53,7 @@
         <th scope="row">{{track.trackTitle}}</th>
         <td>{{track.albumTitle}}</td>
         <td>{{track.artistName}}</td>
+        <td><button class="btn btn-primary" (click)="deleteTrack(track.trackId)">Remove</button></td>
       </tr>
     </tbody>
   </table>

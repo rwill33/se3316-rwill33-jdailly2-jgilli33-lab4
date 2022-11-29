@@ -6,7 +6,11 @@
   </div>
 <div>
   <button (click) = "getArtists()">search artists</button>
-  <input type="checkbox" id="switch" [(ngModel)] = "isOn"/><label for="switch">display more info</label>
+
+  <div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [(ngModel)] = "isOn">
+    <label class="form-check-label" for="flexSwitchCheckChecked">display more info</label>
+  </div>
   <!--
   <table class = "displayInfo" >
     <thead>

@@ -40,6 +40,9 @@ import { ContainerComponent } from './components/container/container.component';
 import { PublicPlaylistDetailsComponent } from './components/public-playlist-details/public-playlist-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
 
 
 @NgModule({
@@ -64,6 +67,9 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     PlaylistComponent,
     ContainerComponent,
     PublicPlaylistDetailsComponent,
+    AcceptableUsePolicyComponent,
+    PrivacyPolicyComponent,
+    DmcaPolicyComponent,
   ],
   imports: [
     BrowserModule,

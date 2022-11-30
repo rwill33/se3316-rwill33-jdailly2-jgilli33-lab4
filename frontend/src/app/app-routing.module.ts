@@ -10,6 +10,9 @@ import {PublicPlaylistComponent} from './components/public_playlist/public-playl
 import {GenresComponent} from './components/genres/genres.component';
 import{TracksComponent} from './components/tracks/tracks.component';
 import {ArtistComponent} from './components/artist/artist.component';
+import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
 
 // route guard
 import { AuthGuard } from './shared/guard/auth.guard';
@@ -40,6 +43,9 @@ const routes: Routes = [
   { path: 'home', redirectTo: '', pathMatch: 'full'},
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },
+  { path: 'acceptable-use-policy', component: AcceptableUsePolicyComponent},
+  { path: 'privacy-policy', component: PrivacyPolicyComponent},
+  { path: 'dmca-policy', component: DmcaPolicyComponent},
   { path: 'dashboard', component: DashboardComponent, children: [
     {
       path: '',

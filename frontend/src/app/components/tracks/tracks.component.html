@@ -1,10 +1,15 @@
 <app-navbar></app-navbar>
 <div>
   <div class = "search">
-    <input type="text" name="searchByArtist" placeholder="Search by artist"  [(ngModel)]="artist"><input>
+    <input type="text" name="searchByArtist" placeholder="Search by artist"  [(ngModel)]="artist">
     
   </div>
 <div>
+
+<button (click) = "getSearchArtist()"> Add Artist</button>
+<button (click) = "getSearchTrack()"> Add Track</button>
+<button (click) = "getSearchGenre()"> Add Genre</button>
+<br>
   <button (click) = "getArtists()">search artists</button>
   <input type="checkbox" id="switch" [(ngModel)] = "isOn"/><label for="switch">display more info</label>
   <!--

@@ -23,19 +23,25 @@ isOn:boolean = false;
 isHidden:boolean = true;
 showMe:boolean= false;
 p:any 
+
+search:any= [];
+
 ngOnInit(): void {
   
 }
 
 getArtists(){
  
-  this.expressService.getArtists(this.artist).subscribe(
+let searchName = this.search.toString();
+console.log(searchName[1])
+//this.expressService.getArtists(this.artist).subscribe(
+  this.expressService.getArtists(searchName).subscribe(
     (response: any) => {
       this.artists = response;
     
      this.obj = this.artists;
  
-
+console.log(this.search);
       //Need to parse the genres object but do that later
 
     if(this.isOn === true){
@@ -43,6 +49,7 @@ getArtists(){
     }else{
       this.showMe = false;
     }
+    this.search = [];
 
 
     },
@@ -55,6 +62,16 @@ getArtists(){
     // this.router.navigate(["/dashboard/tracks/" +this.artist])
     // console.log("here2")
 //console.log(this.artists);
+}
+
+getSearchArtist(){
+  this.search[0] = this.artist;
+}
+getSearchGenre(){
+this.search[2]= this.artist;
+}
+getSearchTrack(){
+this.search[1] = this.artist;
 }
 
   getPost(){

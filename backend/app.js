@@ -93,19 +93,48 @@ router.route('/genres')
           })
     }
   )
-  
+ 
+
+
+
   router.route('/tracks/:name')
   .get(async (req, res) => {
     const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    name2 = '%'+name+'%';
-    console.log(name2);
-   
-    const query = "SELECT * FROM tracks WHERE artistName LIKE ? OR trackTitle LIKE ? OR trackGenres LIKE ?;";
+
+
+
+
+
+
+    console.log("here")
+    name2 = name.split(',')
+
+   // var matches = stringSimilarity.
+   // console.log(matches)
+
+
+    console.log(name[1])
+    for(let i =0; i<name2.length;i++){
+      
+    name2[i] = '%'+name2[i]+'%';
+    if(name2[i]=== "%%"){
+     name2[i]=null;
+    }
+      
+    console.log(name2[i]);
+    }
+console.log(name2);
+
+    const query = "SELECT * FROM tracks WHERE (artistName LIKE ? or ? IS NULL) AND (trackTitle LIKE ? or ? IS NULL) AND (trackGenres LIKE ? or ? IS NULL);";
+ 
+    
     // 
+ 
     let genreTitle;
     let genreTitles = [];
     let title;
-          connection.query(query,[name2,name2,name2], (err, rows, fields) => {
+
+          connection.query(query,[name2[0],name2[0],name2[1],name2[1],name2[2],name2[2]], (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
             } else {
@@ -129,6 +158,7 @@ router.route('/genres')
                 }
                 genreTitles = []
                 tracks.push({
+                  id: track.trackId,
                   name: track.artistName,
                   title: track.trackTitle,
                   genre: genreTitle,
@@ -136,11 +166,20 @@ router.route('/genres')
                   year: track.trackDateCreated
           
               })})
+              console.log(tracks.name)
+
+
+
               res.send(tracks);
             }
           })
     }
   )
+
+    
+
+      
+    
 
 // Get the artist details (at least 6 key attributes) given  an artist ID.
 router.route('/artists/:id')
@@ -184,9 +223,27 @@ router.route('/artists')
 router.route('/playlists/tracks/:id')
   // Get all tracks in a playlist
   .get(async (req, res) => {
-    connection.query(`SELECT * FROM PlaylistTracks WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+    connection.query(`SELECT t.* FROM PlaylistTracks pt JOIN Tracks t WHERE pt.trackId = t.trackId AND playlistId=${req.params.id}`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error querying Playlist Tracks`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
+  .put((req, res) => {
+    connection.query(`INSERT INTO PlaylistTracks(playlistId, trackId) VALUES(${req.params.id}, ${req.body.trackId});`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Inserting Playlist Track.`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
+  .delete((req, res) => {
+    connection.query(`DELETE FROM PlaylistTracks WHERE playlistId=${req.params.id} AND trackId=${req.body.trackId};`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error deleting track from playlist.`)
       } else {
         res.send(rows);
       }
@@ -206,13 +263,13 @@ router.route('/playlists/:id')
   })
   // Delete track from playlist
   .delete(async (req, res) => {
-    // const playlist = await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // const index = playlist.indexOf(req.body.track_id.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    // playlist.splice(index, 1);
-    // if (index > -1) {
-    //   await storage.updateItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;"), playlist);
-    // }
-    // res.send(await storage.getItem(req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")));
+    connection.query(`DELETE FROM UserPlaylists WHERE playlistId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error deleting playlist details`)
+      } else {
+        res.send(rows[0]);
+      }
+    })
   })
 
   router.route('/comment')

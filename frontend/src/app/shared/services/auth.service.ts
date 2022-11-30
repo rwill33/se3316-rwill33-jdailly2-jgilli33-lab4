@@ -173,9 +173,10 @@ export class AuthService {
       })
       .catch((error) => {
         if( error.code === "auth/user-disabled") {
-          console.log("disabled");
+          window.alert("Account has been disabled.\nPlease contact rwill33@uwo.ca for help.");
+        } else{
+          window.alert(error);
         }
-        window.alert(error);
       });
   }
   ChangePassword(oldPassword: string, password: string, confirmPassword: string) {

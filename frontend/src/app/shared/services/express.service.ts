@@ -34,8 +34,20 @@ export class ExpressService {
     return this.http.get("http://localhost:3000/api/playlists/" + id);
   }
 
+  deletePlaylist(id: number) {
+    return this.http.delete("http://localhost:3000/api/playlists/" + id);
+  }
+
   getPlaylistTracksById(id: number) {
     return this.http.get("http://localhost:3000/api/playlists/tracks/" + id);
+  }
+
+  addTrackToPlaylist(trackId: any, playlistId: any) {
+    return this.http.put("http://localhost:3000/api/playlists/tracks/" + playlistId, {trackId: trackId});
+  }
+
+  deleteTrackFromPlaylist(trackId: any, playlistId: any) {
+    return this.http.delete("http://localhost:3000/api/playlists/tracks/" + playlistId, {body: {trackId: trackId}});
   }
 
   changePlaylistPublic(id: number, isPublic: boolean) {
@@ -61,4 +73,10 @@ export class ExpressService {
   hideReview(isHidden: any, reviewId: any) {
     return this.http.post("http://localhost:3000/api/comment", {isHidden: isHidden, reviewId: reviewId})
   }
+
+
+
+
+
+
 }

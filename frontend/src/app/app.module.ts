@@ -45,6 +45,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +71,7 @@ import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.compon
     AcceptableUsePolicyComponent,
     PrivacyPolicyComponent,
     DmcaPolicyComponent,
+
   ],
   imports: [
     BrowserModule,

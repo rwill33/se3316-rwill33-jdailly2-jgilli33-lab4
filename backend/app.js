@@ -27,6 +27,7 @@ const admin = require("firebase-admin");
 const auth = require('firebase-admin/auth');
 const fb = require('firebase/app');
 const realtime = require('firebase/database')
+const similarity = require('string-similarity')
 const fbapp = fb.initializeApp({
   apiKey: "AIzaSyCTLGFrqn1NOrtUQMN7WITJBSve7vrj7VQ",
   authDomain: "rwill33-lab4.firebaseapp.com",
@@ -99,51 +100,38 @@ router.route('/genres')
 
   router.route('/tracks/:name')
   .get(async (req, res) => {
-    const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-
-
-
-
-
-    console.log("here")
+    let name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     name2 = name.split(',')
+    name = name.split(',')
+    for(let i in name){
+      name[i] = name[i].toString()
+    }
 
    // var matches = stringSimilarity.
    // console.log(matches)
 
-
-    console.log(name[1])
     for(let i =0; i<name2.length;i++){
       
     name2[i] = '%'+name2[i]+'%';
     if(name2[i]=== "%%"){
      name2[i]=null;
     }
-      
-    console.log(name2[i]);
     }
-console.log(name2);
 
-    const query = "SELECT * FROM tracks WHERE (artistName LIKE ? or ? IS NULL) AND (trackTitle LIKE ? or ? IS NULL) AND (trackGenres LIKE ? or ? IS NULL);";
- 
-    
-    // 
- 
+    const query = "SELECT * FROM tracks;";
     let genreTitle;
     let genreTitles = [];
     let title;
 
-          connection.query(query,[name2[0],name2[0],name2[1],name2[1],name2[2],name2[2]], (err, rows, fields) => {
+          connection.query(query, (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
             } else {
-              console.log("made it");
               const tracks = [];
               rows.map((track) => {
                 genreTitle = track.trackGenres.split('}, {')
                 for(let i in genreTitle){
-                    if(genreTitle[i] != ''){
+                    if(genreTitle[i]){
                       title = genreTitle[i].split(`title': '`)[1]
                       title = title.split(`', 'genre_url':`)[0]
                       genreTitles.push(title)
@@ -156,30 +144,24 @@ console.log(name2);
                     genreTitle += ', '
                   }
                 }
-                genreTitles = []
-                tracks.push({
-                  id: track.trackId,
-                  name: track.artistName,
-                  title: track.trackTitle,
-                  genre: genreTitle,
-                  time: track.trackDuration,
-                  year: track.trackDateCreated
+                
+                if(checkIf(name[0], track.artistName, name[1], track.trackTitle, name[2], genreTitles[0])){
+                  tracks.push({
+                    id: track.trackId,
+                    name: track.artistName,
+                    title: track.trackTitle,
+                    genre: genreTitle,
+                    time: track.trackDuration,
+                    year: track.trackDateCreated
           
-              })})
-              console.log(tracks.name)
-
-
-
+              })}
+              genreTitles = []
+            })
               res.send(tracks);
             }
           })
     }
   )
-
-    
-
-      
-    
 
 // Get the artist details (at least 6 key attributes) given  an artist ID.
 router.route('/artists/:id')
@@ -406,6 +388,56 @@ router.route('/playlists')
     //   res.status(404).send(`Playlist with name=${playlist}`)
     // }
   })
+
+function checkIf(n1, n2, n3, n4, n5, n6){
+  let bool = false;
+  if (n1) n1 = n1.toString().toLowerCase()
+  if (n2) n2 = n2.toString().toLowerCase()
+  if (n3) n3 = n3.toString().toLowerCase()
+  if (n4) n4 = n4.toString().toLowerCase()
+  if (n5) n5 = n5.toString().toLowerCase()
+  if (n6) n6 = n6.toString().toLowerCase()
+  if (!n2) n2 = "NULL VALUE SHOULD NOT MATCH"
+  if (!n4) n4 = "NULL VALUE SHOULD NOT MATCH"
+  if (!n6) n6 = "NULL VALUE SHOULD NOT MATCH"
+  if(n1 && !n3 && !n5){
+    if(similarity.compareTwoStrings(n1, n2) > 0.5 || n2.includes(n1)){bool = true}
+  }
+  else if(!n1 && n3 && !n5){
+    if(similarity.compareTwoStrings(n3, n4) > 0.5 || n4.includes(n3)){bool = true}
+  }
+  else if(!n1 && !n3 && n5){
+    if(similarity.compareTwoStrings(n5, n6) > 0.5 || n6.includes(n5)){bool = true}
+  }
+  else if(n1 && n3 && !n5){
+    if((similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n3, n4) > 0.5) || 
+    (n2.includes(n1) && n4.includes(n3)) || (similarity.compareTwoStrings(n1, n2) > 0.5 && n4.includes(n3)) ||
+    (n2.includes(n1) && similarity.compareTwoStrings(n3, n4) > 0.5)){bool = true}
+  }
+  else if(n1 && !n3 && n5){
+    if((similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) || 
+    (n2.includes(n1) && n6.includes(n5)) || (similarity.compareTwoStrings(n1, n2) > 0.5 && n6.includes(n5)) ||
+    (n2.includes(n1) && similarity.compareTwoStrings(n5, n6) > 0.5)){bool = true}
+  }
+  else if(!n1 && n3 && n5){
+    if((similarity.compareTwoStrings(n3, n4) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) || 
+    (n4.includes(n3) && n6.includes(n5)) || (similarity.compareTwoStrings(n3, n4) > 0.5 && n6.includes(n5)) ||
+    (n4.includes(n3) && similarity.compareTwoStrings(n5, n6) > 0.5)){bool = true}
+  }
+  else if(n1 && n3 && n5){
+    if((similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n3, n4) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n3, n4) > 0.5 && n6.includes(n5)) ||
+        (similarity.compareTwoStrings(n1, n2) > 0.5 && n4.includes(n3) && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (n2.includes(n1) && similarity.compareTwoStrings(n3, n4) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (n2.includes(n1) && n4.includes(n3) && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (n2.includes(n1) && n6.includes(n5) && similarity.compareTwoStrings(n3, n4) > 0.5) ||
+        (n6.includes(n5) && n4.includes(n3) && similarity.compareTwoStrings(n1, n2) > 0.5) ||
+        (n2.includes(n1) && n4.includes(n3) && n6.includes(n5))){
+          bool = true;
+        }
+  }
+  return bool;
+}
 
 app.use('/api', router);
 app.listen(port, () => console.log(`Listening on port ${port}...`));

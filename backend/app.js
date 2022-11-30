@@ -93,12 +93,26 @@ router.route('/genres')
           })
     }
   )
-  
+ 
+
+
+
   router.route('/tracks/:name')
   .get(async (req, res) => {
     const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+
+
+
+
+
     console.log("here")
     name2 = name.split(',')
+
+   // var matches = stringSimilarity.
+   // console.log(matches)
+
+
     console.log(name[1])
     for(let i =0; i<name2.length;i++){
       
@@ -130,11 +144,20 @@ console.log(name2);
                   year: track.trackDateCreated
           
               })})
+              console.log(tracks.name)
+
+
+
               res.send(tracks);
             }
           })
     }
   )
+
+    
+
+      
+    
 
 // Get the artist details (at least 6 key attributes) given  an artist ID.
 router.route('/artists/:id')

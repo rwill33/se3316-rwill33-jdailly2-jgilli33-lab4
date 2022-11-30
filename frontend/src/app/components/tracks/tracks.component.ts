@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 //import { Artist } from 'src/app/shared/services/Artist';
 import { Observable } from '@firebase/util';
 import {Artist} from 'src/app/shared/services/artist'
+
 @Component({
   selector: 'app-tracks',
   templateUrl: './tracks.component.html',
@@ -23,6 +24,8 @@ isOn:boolean = false;
 isHidden:boolean = true;
 showMe:boolean= false;
 p:any 
+artistName? :any
+
 
 search:any= [];
 
@@ -66,13 +69,18 @@ console.log(this.search);
 
 getSearchArtist(){
   this.search[0] = this.artist;
+  this.artist = "";
 }
 getSearchGenre(){
 this.search[2]= this.artist;
+this.artist = "";
 }
 getSearchTrack(){
 this.search[1] = this.artist;
+this.artist = "";
 }
+
+
 
   getPost(){
    // console.log('this is what you entered', this.artist)

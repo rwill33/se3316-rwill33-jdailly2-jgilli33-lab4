@@ -40,7 +40,7 @@ import { ContainerComponent } from './components/container/container.component';
 import { PublicPlaylistDetailsComponent } from './components/public-playlist-details/public-playlist-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { DMCAComponent } from './components/dmca/dmca.component';
+
 
 
 @NgModule({
@@ -65,7 +65,7 @@ import { DMCAComponent } from './components/dmca/dmca.component';
     PlaylistComponent,
     ContainerComponent,
     PublicPlaylistDetailsComponent,
-    DMCAComponent,
+    
   ],
   imports: [
     BrowserModule,

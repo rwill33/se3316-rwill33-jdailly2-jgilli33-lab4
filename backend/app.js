@@ -332,7 +332,7 @@ router.route('/publicPlaylists')
 router.route('/playlists')
   // Get all playlists
   .get(async (req, res) => {
-    connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE uid='${req.query.uid}'`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error Selecting Playlists.`);
       } else {

@@ -18,8 +18,8 @@ export class ExpressService {
     return this.http.post("http://localhost:3000/api/playlists", {name: playlistName, description: description ==="" ? null : description, playlistId: playlistId});
   }
 
-  getUserPlaylists() {
-    return this.http.get("http://localhost:3000/api/playlists");
+  getUserPlaylists(uid: any) {
+    return this.http.get("http://localhost:3000/api/playlists?uid=" + uid);
   }
 
   getGenres(){

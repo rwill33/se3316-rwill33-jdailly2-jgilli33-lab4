@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -33,7 +33,8 @@ export class PublicPlaylistDetailsComponent implements OnInit {
       private expressService: ExpressService,
       private db: AngularFireDatabase,
       private modalService: BsModalService,
-      private authService: AuthService
+      private authService: AuthService,
+      private router: Router
       ) {
         this.routeSub = Subscription.EMPTY;
         this.id = -1;
@@ -151,6 +152,10 @@ getPlaylist(id: number) {
   this.expressService.getPlaylistById(id).subscribe(
     (response: any) => {
       console.log(response);
+      if(!response) {
+        this.router.navigate(["/playlists"]);
+        window.alert("Playlist does not exist");
+      }
       const ref = this.db.object('users/' + response.uid);
       ref.query.ref.on('value', (snapshot) => {
         this.username = snapshot.val().username;

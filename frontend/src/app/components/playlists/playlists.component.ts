@@ -31,7 +31,7 @@ export class PlaylistsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.expressService.getUserPlaylists().subscribe(
+    this.expressService.getUserPlaylists(this.authService.user.uid).subscribe(
       (response: any) => {
         this.playlists = response;
       },

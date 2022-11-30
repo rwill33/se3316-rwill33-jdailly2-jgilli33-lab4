@@ -102,6 +102,9 @@ router.route('/genres')
    
     const query = "SELECT * FROM tracks WHERE artistName LIKE ? OR trackTitle LIKE ? OR trackGenres LIKE ?;";
     // 
+    let genreTitle;
+    let genreTitles = [];
+    let title;
           connection.query(query,[name2,name2,name2], (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
@@ -109,10 +112,23 @@ router.route('/genres')
               console.log("made it");
               const tracks = [];
               rows.map((track) => {
+                genreTitle = track.trackGenres.split('}, {')
+                for(let i in genreTitle){
+                    title = genreTitle[i].split(`title': '`)[1]
+                    title = title.split(`', 'genre_url':`)[0]
+                    genreTitles.push(title)
+                }
+                genreTitle = ''
+                for( let i in genreTitles){
+                  genreTitle += genreTitles[i]
+                  if(i<genreTitles.length-1){
+                    genreTitle += ', '
+                  }
+                }
                 tracks.push({
                   name: track.artistName,
                   title: track.trackTitle,
-                  genre: track.trackGenres,
+                  genre: genreTitle,
                   time: track.trackDuration,
                   year: track.trackDateCreated
           

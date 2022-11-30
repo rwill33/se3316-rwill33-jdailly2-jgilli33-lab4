@@ -73,4 +73,10 @@ export class ExpressService {
   hideReview(isHidden: any, reviewId: any) {
     return this.http.post("http://localhost:3000/api/comment", {isHidden: isHidden, reviewId: reviewId})
   }
+
+
+
+
+
+
 }

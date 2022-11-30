@@ -93,16 +93,43 @@ router.route('/genres')
           })
     }
   )
-  
+ 
+
+
+
   router.route('/tracks/:name')
   .get(async (req, res) => {
     const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    name2 = '%'+name+'%';
-    console.log(name2);
-   
-    const query = "SELECT * FROM tracks WHERE artistName LIKE ? OR trackTitle LIKE ? OR trackGenres LIKE ?;";
+
+
+
+
+
+
+    console.log("here")
+    name2 = name.split(',')
+
+   // var matches = stringSimilarity.
+   // console.log(matches)
+
+
+    console.log(name[1])
+    for(let i =0; i<name2.length;i++){
+      
+    name2[i] = '%'+name2[i]+'%';
+    if(name2[i]=== "%%"){
+     name2[i]=null;
+    }
+      
+    console.log(name2[i]);
+    }
+console.log(name2);
+
+    const query = "SELECT * FROM tracks WHERE (artistName LIKE ? or ? IS NULL) AND (trackTitle LIKE ? or ? IS NULL) AND (trackGenres LIKE ? or ? IS NULL);";
+ 
+    
     // 
-          connection.query(query,[name2,name2,name2], (err, rows, fields) => {
+          connection.query(query,[name2[0],name2[0],name2[1],name2[1],name2[2],name2[2]], (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
             } else {
@@ -118,11 +145,20 @@ router.route('/genres')
                   year: track.trackDateCreated
           
               })})
+              console.log(tracks.name)
+
+
+
               res.send(tracks);
             }
           })
     }
   )
+
+    
+
+      
+    
 
 // Get the artist details (at least 6 key attributes) given  an artist ID.
 router.route('/artists/:id')

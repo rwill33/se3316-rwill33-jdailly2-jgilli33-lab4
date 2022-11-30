@@ -42,6 +42,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +65,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     PlaylistComponent,
     ContainerComponent,
     PublicPlaylistDetailsComponent,
+    
   ],
   imports: [
     BrowserModule,

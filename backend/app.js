@@ -114,9 +114,11 @@ router.route('/genres')
               rows.map((track) => {
                 genreTitle = track.trackGenres.split('}, {')
                 for(let i in genreTitle){
-                    title = genreTitle[i].split(`title': '`)[1]
-                    title = title.split(`', 'genre_url':`)[0]
-                    genreTitles.push(title)
+                    if(genreTitle[i] != ''){
+                      title = genreTitle[i].split(`title': '`)[1]
+                      title = title.split(`', 'genre_url':`)[0]
+                      genreTitles.push(title)
+                    }
                 }
                 genreTitle = ''
                 for( let i in genreTitles){
@@ -125,6 +127,7 @@ router.route('/genres')
                     genreTitle += ', '
                   }
                 }
+                genreTitles = []
                 tracks.push({
                   name: track.artistName,
                   title: track.trackTitle,

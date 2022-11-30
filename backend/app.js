@@ -129,6 +129,11 @@ console.log(name2);
  
     
     // 
+ 
+    let genreTitle;
+    let genreTitles = [];
+    let title;
+
           connection.query(query,[name2[0],name2[0],name2[1],name2[1],name2[2],name2[2]], (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
@@ -136,11 +141,27 @@ console.log(name2);
               console.log("made it");
               const tracks = [];
               rows.map((track) => {
+                genreTitle = track.trackGenres.split('}, {')
+                for(let i in genreTitle){
+                    if(genreTitle[i] != ''){
+                      title = genreTitle[i].split(`title': '`)[1]
+                      title = title.split(`', 'genre_url':`)[0]
+                      genreTitles.push(title)
+                    }
+                }
+                genreTitle = ''
+                for( let i in genreTitles){
+                  genreTitle += genreTitles[i]
+                  if(i<genreTitles.length-1){
+                    genreTitle += ', '
+                  }
+                }
+                genreTitles = []
                 tracks.push({
                   id: track.trackId,
                   name: track.artistName,
                   title: track.trackTitle,
-                  genre: track.trackGenres,
+                  genre: genreTitle,
                   time: track.trackDuration,
                   year: track.trackDateCreated
           

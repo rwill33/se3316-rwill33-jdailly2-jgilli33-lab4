@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require('mysql');
 const fs = require("fs");
 const cors = require('cors');
+var https = require("https");
 
 const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
 const connection = mysql.createConnection(config);
@@ -450,4 +451,13 @@ function checkIf(n1, n2, n3, n4, n5, n6){
 }
 
 app.use('/api', router);
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+
+https
+  .createServer(
+    {
+      key: fs.readFileSync("server.key"),
+      cert: fs.readFileSync("server.cert"),
+    },
+    app
+  )
+  .listen(port, () => console.log(`Listening on port ${port}...`));

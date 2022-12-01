@@ -37,8 +37,6 @@ const routes: Routes = [
     }
   ]},
 
-  {path: 'artists', component: ArtistComponent},
-  {path: 'genres', component: GenresComponent},
   {path: 'tracks',
   children: [
     {

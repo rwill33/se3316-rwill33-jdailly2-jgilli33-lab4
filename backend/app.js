@@ -125,6 +125,7 @@ router.route('/genres')
 
           connection.query(query, (err, rows, fields) => {
             if (err) {
+              console.log(err);
               res.status(500).send(`Error querying genres`)
             } else {
               const tracks = [];
@@ -455,8 +456,8 @@ app.use('/api', router);
 https
   .createServer(
     {
-      key: fs.readFileSync("key.pem"),
-      cert: fs.readFileSync("certificate.pem"),
+      key: fs.readFileSync("server.key"),
+      cert: fs.readFileSync("server.cert"),
     },
     app
   )

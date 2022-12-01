@@ -23,6 +23,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AccountComponent } from './components/account/account.component';
 import { ContainerComponent } from './components/container/container.component';
 import { PublicPlaylistDetailsComponent } from './components/public-playlist-details/public-playlist-details.component';
+import { DisputesComponent } from './components/disputes/disputes.component';
 const routes: Routes = [
   // { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   {path: '', component: HomeComponent},
@@ -70,7 +71,14 @@ const routes: Routes = [
         canActivate: [PermissionGuard]
 // Permission which is need to access this component.
 // Permission checked by Permission Guard
-    }], canActivate: [AuthGuard]},
+    }, 
+    {
+    path: 'disputes',
+        component: DisputesComponent,
+    canActivate: [PermissionGuard],
+    }],
+
+    canActivate: [AuthGuard]},
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
 ];

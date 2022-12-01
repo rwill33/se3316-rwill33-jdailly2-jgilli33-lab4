@@ -46,3 +46,6 @@ img{
 button + button {
   margin-left: 10px;
 }
+.report{
+  float: right;
+}

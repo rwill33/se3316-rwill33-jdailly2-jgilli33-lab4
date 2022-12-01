@@ -1,0 +1,26 @@
+<table>
+    <thead>
+        <tr>
+          <th scope="col" style="
+          width: 300px;
+          max-width: 200px;">Review Number</th>
+          <th scope="col">date request received</th>
+          <th scope="col">date notice sent</th>
+          <th scope="col">date dispute received</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+         <th scope="row"> <input type = "search" placeholder="enter review Id here" [(ngModel)]="reviewN" > </th>
+         <td> <input type = "search" placeholder="date request received" [(ngModel)]="dateR"> </td>   
+         <td> <input type = "search" placeholder="date notice sent" [(ngModel)]="dateN"> </td>   
+         <td> <input type = "search" placeholder="date dispute received " [(ngModel)]="dateD"> </td>   
+         <td><button (click) = "storeResults()">Add</button></td>
+        </tr>
+    </tbody>
+
+
+
+
+
+</table>

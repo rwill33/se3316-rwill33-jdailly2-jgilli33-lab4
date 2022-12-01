@@ -12,7 +12,7 @@ export class PrivacyPolicyComponent implements OnInit {
 
  // authService?: AuthService;
    contentEditable: boolean = true
-
+  hidden: boolean = false;
   ngOnInit(): void {
     console.log(this.authService?.role.admin)
 if(this.authService?.role.admin === true){
@@ -20,7 +20,14 @@ this.contentEditable = true;
 
 }else{
   this.contentEditable = false;
+  this.hidden = true;
 }
+
+  }
+
+
+  save(){
+
 
   }
 

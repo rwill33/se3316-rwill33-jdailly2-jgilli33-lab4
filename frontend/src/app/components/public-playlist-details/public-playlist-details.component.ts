@@ -187,4 +187,13 @@ changePublic(data: any, id: any) {
     });
   this.getPlaylist(this.id);
 }
+
+
+reportBtn(){
+
+
+
+}
+
+
 }

@@ -74,28 +74,6 @@ router.route('/updateUser').post((req, res) => {
     res.status(500).send("Error updating user");
   });
 })
-
-// Get genre names, IDs and parent IDs.
-router.route('/genres')
-  .get(async (req, res) => {
-          connection.query('SELECT * FROM Genres', (err, rows, fields) => {
-            if (err) {
-              res.status(500).send(`Error querying genres`)
-            } else {
-              const genres = [];
-              rows.map((genre) => {
-                genres.push({
-                  name: genre.title,
-                  id: genre.genreId,
-                  parentId: genre.parentId
-              })})
-              res.send(genres);
-            }
-          })
-    }
-  )
- 
-
   router.route('/track/:id')
   .get((req, res) => {
     connection.query(`SELECT * FROM Tracks WHERE trackId=${req.params.id}`, (err, rows, fields) => {

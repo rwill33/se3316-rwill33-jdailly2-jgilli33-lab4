@@ -7,9 +7,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { HomeComponent } from './components/home/home.component';
 import {PublicPlaylistComponent} from './components/public_playlist/public-playlist.component';
-import {GenresComponent} from './components/genres/genres.component';
 import{TracksComponent} from './components/tracks/tracks.component';
-import {ArtistComponent} from './components/artist/artist.component';
 import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
@@ -38,6 +36,7 @@ const routes: Routes = [
       component: PublicPlaylistDetailsComponent
     }
   ]},
+
   {path: 'artists', component: ArtistComponent},
   {path: 'genres', component: GenresComponent},
   {path: 'tracks',

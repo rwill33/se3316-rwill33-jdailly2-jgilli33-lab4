@@ -48,7 +48,7 @@ const adminApp = admin.initializeApp({
 
 
 var corsOptions = {
-  origin: 'http://localhost',
+  origin: 'https://ronin.software',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
 

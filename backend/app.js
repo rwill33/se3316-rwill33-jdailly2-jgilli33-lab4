@@ -96,7 +96,16 @@ router.route('/genres')
   )
  
 
-
+  router.route('/track/:id')
+  .get((req, res) => {
+    connection.query(`SELECT * FROM Tracks WHERE trackId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error querying Track`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
 
   router.route('/tracks/:name')
   .get(async (req, res) => {
@@ -162,45 +171,6 @@ router.route('/genres')
           })
     }
   )
-
-// Get the artist details (at least 6 key attributes) given  an artist ID.
-router.route('/artists/:id')
-  .get(async (req, res) => {
-    // const id = req.params.id.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const artist = await dataReader.getArtistById(id);
-    // if (artist) {
-    //   res.send(artist);
-    // } else {
-    //   res.status(404).send(`Artist with id=${id} was not found.`)
-    // }
-  })
-
-// Get the following details for a given track ID: album_id, album_title, artist_id, artist_name, tags, track_date_created, track_date_recorded, track_duration, track_genres, track_number, track_title
-router.route('/tracks/:id')
-  .get(async (req, res) => {
-    // const id = req.params.id.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const track = await dataReader.getTrackById(id);
-    // if (track) {
-    //   res.send(track);
-    // } else {
-    //   res.status(404).send(`Track with id=${id} was not found.`)
-    // }
-  })
-
-// Get the first n number of matching track IDs for a given search pattern matching the track title or album. If the number of matches is less than n, then return all matches. Please feel free to pick a suitable value for n.
-router.route('/tracks')
-  .get(async (req, res) => {
-    // const search = req.query.search.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const tracks = await dataReader.getTracksByTitleOrAlbum(search, 10);
-    // res.send(tracks);
-  })
-// Get all the matching artist IDs for a given search pattern matching the artist's name.
-router.route('/artists')
-  .get(async (req, res) => {
-    // const search = req.query.search.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const artists = await dataReader.getArtistsByName(search);
-    // res.send(artists);
-  })
 
 router.route('/playlists/tracks/:id')
   // Get all tracks in a playlist

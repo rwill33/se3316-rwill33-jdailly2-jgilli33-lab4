@@ -177,4 +177,11 @@ export class PlaylistComponent implements OnInit {
           console.log(error);
         });
     }
+    playSongOnyoutube(title:string){
+      window.open("https://www.youtube.com/results?search_query="+ title)
+    }
+
+    viewTrackDetails(trackId: any) {
+      this.router.navigate(['/tracks/' + trackId])
+    }
 }

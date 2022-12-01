@@ -2,7 +2,10 @@ const express = require("express");
 const mysql = require('mysql');
 const fs = require("fs");
 const cors = require('cors');
-const { time } = require("console");
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/ronin.software/fullchain.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/ronin.software/privkey.pem', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
 
 const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
 const connection = mysql.createConnection(config);
@@ -451,4 +454,6 @@ function checkIf(n1, n2, n3, n4, n5, n6){
 }
 
 app.use('/api', router);
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(port, () => console.log(`Listening on port ${port}...`));

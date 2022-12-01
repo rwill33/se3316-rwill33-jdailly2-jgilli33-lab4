@@ -118,7 +118,7 @@ router.route('/genres')
     }
     }
 
-    const query = "SELECT * FROM tracks;";
+    const query = "SELECT * FROM Tracks;";
     let genreTitle;
     let genreTitles = [];
     let title;

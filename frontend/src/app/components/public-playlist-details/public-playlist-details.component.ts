@@ -180,16 +180,11 @@ getPlaylistTracks(id: number) {
     });
 }
 
-changePublic(data: any, id: any) {
-  console.log(data.target.checked, id);
-  this.expressService.changePlaylistPublic(id, data.target.checked).subscribe(
-    (response: any) => {
-      console.log(response);
-      this.tracks = response;
-    },
-    (error) => {
-      console.log(error);
-    });
-  this.getPlaylist(this.id);
+playSongOnyoutube(title:string){
+  window.open("https://www.youtube.com/results?search_query="+ title)
+}
+
+viewTrackDetails(trackId: any) {
+  this.router.navigate(['/tracks/' + trackId])
 }
 }

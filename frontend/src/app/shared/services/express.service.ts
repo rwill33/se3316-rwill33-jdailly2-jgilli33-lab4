@@ -78,9 +78,8 @@ export class ExpressService {
     return this.http.post("http://localhost:3000/api/comment", {isHidden: isHidden, reviewId: reviewId})
   }
 
-
-
-
-
+  getTrackById(id: any) {
+    return this.http.get("http://localhost:3000/api/track/" +id);
+  }
 
 }

@@ -21,6 +21,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AccountComponent } from './components/account/account.component';
 import { ContainerComponent } from './components/container/container.component';
 import { PublicPlaylistDetailsComponent } from './components/public-playlist-details/public-playlist-details.component';
+import { TrackDetailsComponent } from './components/track-details/track-details.component';
 const routes: Routes = [
   // { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   {path: '', component: HomeComponent},
@@ -35,7 +36,20 @@ const routes: Routes = [
       component: PublicPlaylistDetailsComponent
     }
   ]},
-  {path: 'tracks', component: TracksComponent},
+
+  {path: 'artists', component: ArtistComponent},
+  {path: 'genres', component: GenresComponent},
+  {path: 'tracks',
+  children: [
+    {
+      path: '',
+      component: TracksComponent
+    },
+    {path: ":id",
+    component: TrackDetailsComponent
+    }
+  ]
+},
   { path: 'home', redirectTo: '', pathMatch: 'full'},
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },

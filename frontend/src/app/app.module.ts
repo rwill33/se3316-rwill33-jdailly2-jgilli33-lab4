@@ -41,6 +41,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
+import { TrackDetailsComponent } from './components/track-details/track-details.component';
 
 
 
@@ -67,6 +68,7 @@ import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.compon
     AcceptableUsePolicyComponent,
     PrivacyPolicyComponent,
     DmcaPolicyComponent,
+    TrackDetailsComponent,
 
   ],
   imports: [

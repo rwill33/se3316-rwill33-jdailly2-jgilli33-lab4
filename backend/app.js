@@ -74,6 +74,16 @@ router.route('/updateUser').post((req, res) => {
     res.status(500).send("Error updating user");
   });
 })
+  router.route('/track/:id')
+  .get((req, res) => {
+    connection.query(`SELECT * FROM Tracks WHERE trackId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error querying Track`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
 
   router.route('/tracks/:name')
   .get(async (req, res) => {

@@ -2,10 +2,6 @@ const express = require("express");
 const mysql = require('mysql');
 const fs = require("fs");
 const cors = require('cors');
-var privateKey  = fs.readFileSync('/etc/letsencrypt/live/ronin.software/fullchain.pem', 'utf8');
-var certificate = fs.readFileSync('/etc/letsencrypt/live/ronin.software/privkey.pem', 'utf8');
-
-var credentials = {key: privateKey, cert: certificate};
 
 const config = JSON.parse(fs.readFileSync('../sql/sqlconfig.json'));
 const connection = mysql.createConnection(config);
@@ -21,7 +17,7 @@ router.use(express.json());
 
 // Setup middleware
 app.use((req, res, next) => {
-  console.log(`${req.method} request for ${req.url} | ${req.hostname} | ${req.originalUrl} | ${req.url}`);
+  console.log(`${req.method} request for ${req.url} | ${req.hostname} | ${req.headers['x-forwarded-for']} | ${req.socket.remoteAddress}`);
   next();
 })
 
@@ -454,6 +450,4 @@ function checkIf(n1, n2, n3, n4, n5, n6){
 }
 
 app.use('/api', router);
-
-var httpsServer = https.createServer(credentials, app);
-httpsServer.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(port, () => console.log(`Listening on port ${port}...`));

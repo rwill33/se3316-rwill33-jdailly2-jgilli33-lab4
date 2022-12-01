@@ -456,8 +456,8 @@ app.use('/api', router);
 https
   .createServer(
     {
-      key: fs.readFileSync("server.key"),
-      cert: fs.readFileSync("server.cert"),
+      key: fs.readFileSync("key.pem"),
+      cert: fs.readFileSync("certificate.pem"),
     },
     app
   )

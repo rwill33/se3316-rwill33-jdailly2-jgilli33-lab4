@@ -45,7 +45,7 @@ console.log(searchName[1])
      this.obj = this.artists;
  
 console.log(this.search);
-      //Need to parse the genres object but do that later
+     
 
     if(this.isOn === true){
       this.showMe = true;

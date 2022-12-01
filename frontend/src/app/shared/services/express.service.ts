@@ -34,6 +34,10 @@ export class ExpressService {
     return this.http.get("http://localhost:3000/api/playlists/" + id);
   }
 
+  getNumberOfTracks(playlistId: any) {
+    return this.http.get("http://localhost:3000/api/countTracks/" + playlistId);
+  }
+
   deletePlaylist(id: number) {
     return this.http.delete("http://localhost:3000/api/playlists/" + id);
   }

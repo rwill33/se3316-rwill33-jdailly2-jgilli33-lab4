@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   public loggedIn: boolean = false;
-  public isAdmin: string = this.authService.role.admin ? "Admin" : "Account";
+  public isAdmin: string = this.authService.role?.admin ? "Admin" : "Account";
   constructor(
     public authService: AuthService,
     private cdRef:ChangeDetectorRef

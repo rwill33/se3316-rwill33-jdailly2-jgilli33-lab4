@@ -299,10 +299,21 @@ router.route('/comment/:id')
 
 })
 
+router.route('/countTracks/:playlistId')
+  .get((req, res) => {
+    connection.query(`SELECT COUNT(pt.trackId) as count, SUM(trackDuration) as duration, AVG(rating) as rating FROM PlaylistTracks pt JOIN Tracks t ON pt.trackId=t.trackId LEFT OUTER JOIN Reviews r ON pt.playlistId=r.playlistId WHERE pt.playlistId=${req.params.playlistId}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Counting Tracks.`);
+      } else {
+        res.send(rows[0]);
+      }
+    });
+  })
+
 
 router.route('/publicPlaylists')
   .get((req, res) => {
-    connection.query(`SELECT * FROM UserPlaylists WHERE isPublic=true`, (err, rows, fields) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE isPublic=true ORDER BY modifiedDate DESC`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error Selecting Playlists.`);
       } else {
@@ -314,7 +325,7 @@ router.route('/publicPlaylists')
 router.route('/playlists')
   // Get all playlists
   .get(async (req, res) => {
-    connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE uid='${req.query.uid}' ORDER BY modifiedDate DESC`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error Selecting Playlists.`);
       } else {

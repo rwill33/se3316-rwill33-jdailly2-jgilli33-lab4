@@ -3,6 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ExpressService } from 'src/app/shared/services/express.service';
 import { Playlist } from 'src/app/shared/services/playlist';
 
@@ -27,7 +28,8 @@ export class PlaylistComponent implements OnInit {
       private expressService: ExpressService,
       private db: AngularFireDatabase,
       private modalService: BsModalService,
-      private router: Router
+      private router: Router,
+      private authService: AuthService
       ) {
         this.routeSub = Subscription.EMPTY;
         this.id = -1;
@@ -82,6 +84,9 @@ export class PlaylistComponent implements OnInit {
       this.expressService.getPlaylistById(id).subscribe(
         (response: any) => {
           console.log(response);
+          if (response.uid !== this.authService.user.uid) {
+            this.router.navigate(['/dashboard']);
+          }
           const ref = this.db.object('users/' + response.uid);
           ref.query.ref.on('value', (snapshot) => {
             this.username = snapshot.val().username;

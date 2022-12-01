@@ -1,10 +1,17 @@
   <div class="container text-center">
+    <h1>
+      Public Playlists
+    </h1>
     <div class="row row-cols-4">
       <div *ngFor="let playlist of playlists" class="col">
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 18rem;" (click)="getPlaylist(playlist.playlistId)">
           <div class="card-body">
-            <img src="../../../assets/musicicon.jpeg" class="card-img-top" alt="..." (click)="getPlaylist(playlist.playlistId)">
+            <img src="../../../assets/musicicon.jpeg" class="card-img-top" alt="...">
             <h5 class="card-title">{{playlist.playlistName}}</h5>
+            <div class="username">{{playlist.username}}</div>
+            <div class="username">Track Count: {{playlist.trackCount}}</div>
+            <div class="username">{{playlist.duration ? "Duration: " + playlist.duration + " Minutes" : "Duration: 0 Minutes"}}</div>
+            <div class="username">{{playlist.rating ? "Rating: " + playlist.rating : "No reviews"}}</div>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ router.use(express.json());
 
 // Setup middleware
 app.use((req, res, next) => {
-  console.log(`${req.method} request for ${req.url}`);
+  console.log(`${req.method} request for ${req.url} | ${req.hostname} | ${req.ip}`);
   next();
 })
 

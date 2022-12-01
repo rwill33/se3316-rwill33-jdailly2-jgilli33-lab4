@@ -10,7 +10,7 @@ export class ExpressService {
     private http: HttpClient
   ) { }
 
-  hostName: string = 'http://ronin.software:3000';
+  hostName: string = 'https://ronin.software:3000';
 
   createPlaylist(playlistName: string, description: string, uid: any) {
     return this.http.put(`${this.hostName}/api/playlists`, {name: playlistName, description: description, uid: uid});

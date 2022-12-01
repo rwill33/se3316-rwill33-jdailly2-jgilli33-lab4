@@ -33,8 +33,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "1.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -63,6 +63,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "sslKey": "/etc/letsencrypt/live/ronin.software/fullchain.pem",
+            "sslCert": "/etc/letsencrypt/live/ronin.software/privkey.pem",
+            "ssl": true
+          },
           "configurations": {
             "production": {
               "browserTarget": "frontend:build:production"

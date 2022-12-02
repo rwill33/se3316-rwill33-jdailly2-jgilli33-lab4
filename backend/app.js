@@ -407,5 +407,31 @@ router.route('/playlists')
     // }
   })
 
+  router.route('/disputes')
+  .put(async(req, res) => {
+    console.log("here in disputes")
+    console.log(req.body.reviewId);
+    console.log(req.body.dateD);
+    console.log(req.body.dateR);
+    connection.query(`INSERT INTO disputes (reviewId,dateRequest,dateDispute) VALUES ('${req.body.reviewId}','${req.body.dateR}','${req.body.dateD}')`,(err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Getting disputes.`);
+      } else {
+        console.log("made it")
+        res.send(rows);
+      }
+    });
+  }).get(async (req, res) => {
+    connection.query(`SELECT * FROM disputes`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Selecting disputes.`);
+      } else {
+        res.send(rows);
+      }
+    });
+  })
+  
+
+
 app.use('/api', router);
 app.listen(port, () => console.log(`Listening on port ${port}...`));

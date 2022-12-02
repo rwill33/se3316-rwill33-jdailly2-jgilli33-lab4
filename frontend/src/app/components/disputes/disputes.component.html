@@ -10,14 +10,22 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-         <th scope="row"> <input type = "search" placeholder="enter review Id here" [(ngModel)]="reviewN" > </th>
-         <td> <input type = "search" placeholder="date request received" [(ngModel)]="dateR"> </td>   
-         <td> <input type = "search" placeholder="date notice sent" [(ngModel)]="dateN"> </td>   
-         <td> <input type = "search" placeholder="date dispute received " [(ngModel)]="dateD"> </td>   
-         <td><button (click) = "storeResults()">Add</button></td>
+        <tr *ngFor="let dispute of obj">
+            <th scope ="row">{{ dispute.reviewId}}</th>
+            <td>{{dispute.dateRequest}}</td>
+            <td>{{dispute.dateNotice}}</td>
+            <td>{{dispute.dateDispute}}</td>
+
         </tr>
     </tbody>
+
+
+         <input type = "search" placeholder="enter review Id here" [(ngModel)]="reviewN" > 
+         <input type = "search" placeholder="date request received" [(ngModel)]="dateR">  
+        <!-- <td> <input type = "search" placeholder="date notice sent" [(ngModel)]="dateN"> </td>  --> 
+          <input type = "search" placeholder="date dispute received " [(ngModel)]="dateD">    
+         <button (click) = "storeResults()">Add</button>
+     
 
 
 

@@ -372,7 +372,6 @@ router.route('/playlists')
     });
   })
   
-<<<<<<< HEAD
   router.route('/policys')
   .put(async(req, res) => {
   console.log(req.body.pol);
@@ -411,7 +410,6 @@ router.route('/playlists')
   })
 
 
-=======
 function checkIf(n1, n2, n3, n4, n5, n6){
   let bool = false;
   if (n1) n1 = n1.toString().toLowerCase()
@@ -461,7 +459,6 @@ function checkIf(n1, n2, n3, n4, n5, n6){
   }
   return bool;
 }
->>>>>>> 3a03dbfcd91592cdfd13cfb8a553844fb9383f28
 
 app.use('/api', router);
 app.listen(port, () => console.log(`Listening on port ${port}...`));

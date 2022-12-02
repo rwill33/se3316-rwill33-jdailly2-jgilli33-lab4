@@ -81,14 +81,14 @@ export class ExpressService {
   }
 
   addDispute(reviewId : number, dateD: string, dateR:string){
-    return this.http.put("http://localhost:3000/api/disputes",{ reviewId, dateD,dateR})
+    return this.http.put(`${this.hostName}/api/disputes`,{ reviewId, dateD,dateR})
   }
   getDispute(){
-    return this.http.get("http://localhost:3000/api/disputes" );
+    return this.http.get(`${this.hostName}/api/disputes` );
   }
 
   getTrackById(id: any) {
-    return this.http.get("http://localhost:3000/api/track/" +id);
+    return this.http.get(`${this.hostName}/api/track/` +id);
   }
 
 }

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ExpressService } from 'src/app/shared/services/express.service';
 import { Router } from '@angular/router';
-//import { Artist } from 'src/app/shared/services/Artist';
-import { Observable } from '@firebase/util';
 import {Artist} from 'src/app/shared/services/artist'
 
 @Component({
@@ -16,6 +14,8 @@ export class TracksComponent implements OnInit {
 
 readonly ROOT_URL = 'localhost:3000/api'
 artist: string = '';
+track:string = '';
+genre:string = '';
 posts: any;
 artists?:Artist[];
 data:any =[];
@@ -34,10 +34,22 @@ ngOnInit(): void {
 }
 
 getArtists(){
+
+  this.search[0] = this.artist;
+  if(this.search[0]){
+    this.artist = "";
+  }
+  this.search[2]= this.genre;
+  if(this.search[2]){
+    this.genre = "";
+  }
+  this.search[1] = this.track;
+  if(this.search[1]){
+    this.track = "";
+  }
  
 let searchName = this.search.toString();
 console.log(searchName[1])
-//this.expressService.getArtists(this.artist).subscribe(
   this.expressService.getArtists(searchName).subscribe(
     (response: any) => {
       this.artists = response;
@@ -45,13 +57,7 @@ console.log(searchName[1])
      this.obj = this.artists;
  
 console.log(this.search);
-     
 
-    if(this.isOn === true){
-      this.showMe = true;
-    }else{
-      this.showMe = false;
-    }
     this.search = [];
 
 
@@ -59,12 +65,6 @@ console.log(this.search);
     (error) => {
       console.log(error);
     });
-
-//console.log(this.artists)
-  //console.log("here1")
-    // this.router.navigate(["/dashboard/tracks/" +this.artist])
-    // console.log("here2")
-//console.log(this.artists);
 }
 
 getSearchArtist(){
@@ -72,26 +72,27 @@ getSearchArtist(){
   this.artist = "";
 }
 getSearchGenre(){
-this.search[2]= this.artist;
+this.search[2]= this.genre;
 this.artist = "";
 }
 getSearchTrack(){
-this.search[1] = this.artist;
+this.search[1] = this.track;
 this.artist = "";
 }
 
 
 
   getPost(){
-   // console.log('this is what you entered', this.artist)
    
 this.posts =this.http.get("http://localhost:3000/api/tracks/"+this.artist)
 
   }
 
-  showDetails(){
-    console.log("made it to the function")
+  viewTrackDetails(trackId: any) {
+    console.log(this.obj);
+    this.router.navigate(['/tracks/' + trackId])
   }
+
   playSongOnyoutube(title:string){
     window.open("https://www.youtube.com/results?search_query="+ title)
   }

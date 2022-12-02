@@ -6,7 +6,7 @@
       <h3 class="d-flex justify-content-center">Sign In</h3>
       <div class="input-group flex-nowrap mt-5 mb-4">
         <span class="input-group-text" id="addon-wrapping">@</span>
-        <input type="text" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Email" aria-label="Username" aria-describedby="addon-wrapping" #userName required>
+        <input type="email" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Email" aria-label="Username" aria-describedby="addon-wrapping" #userName required>
       </div>
         <div class="input-group has-validation mb-2">
           <input type="password" [ngClass]="this.error ? 'form-control is-invalid' : 'form-control'" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" #userPassword required>
@@ -17,7 +17,7 @@
 
       <!-- Calling SignIn Api from AuthService -->
       <div class="input-group flex-nowrap mb-3">
-        <input type="button" class="btn btn-primary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
+        <input type="button" class="btn btn-primary" value="Log in" (click)="inputValidation(userName.value, userPassword.value)">
       </div>
       <div class="formGroup">
         <span class="or"><span class="orInner">Or</span></span>

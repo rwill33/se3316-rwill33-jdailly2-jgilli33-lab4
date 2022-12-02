@@ -1,0 +1,16 @@
+<div class="cont">
+<app-navbar></app-navbar>
+  <button class="btn btn-success back-button"(click)="this.router.navigate([back()])">Back</button>
+  <div class="details-cont">
+    <div class="details">
+      <p class="title">{{track.trackTitle}}</p>
+      <p class="album">Album Title: {{track.albumTitle}}</p>
+      <p class="artist-name">Artist Name: {{track.artistName}}</p>
+      <p class="track-duration">Track Duration: {{track.trackDuration}}</p>
+      <p class="track-date-recorded">Track Date Recorded: {{track.trackDateRecorded}}</p>
+      <div class="genres">Genres: <div class="genre" *ngFor="let genre of genres">{{genre.genre_title}}</div></div>
+    </div>
+  </div>
+</div>
+
+

@@ -15,7 +15,7 @@ export class PlaylistsComponent implements OnInit {
   modalRef?: BsModalRef;
   error?: boolean;
   errorMessage?: string;
-  playlists?: Playlist[];
+  playlists?: any[];
   user?: User;
   constructor(
     private modalService: BsModalService,
@@ -31,9 +31,21 @@ export class PlaylistsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.expressService.getUserPlaylists().subscribe(
+    this.expressService.getUserPlaylists(this.authService.user.uid).subscribe(
       (response: any) => {
-        this.playlists = response;
+        const playlists = response;
+        console.log(playlists);
+        playlists.forEach((data: any) => {
+          this.expressService.getNumberOfTracks(data.playlistId).subscribe(
+          (r: any) => {
+            data['trackCount'] = r.count;
+            data['duration'] = r.duration;
+            data['rating'] = r.rating;
+          }, (e) => {
+            console.log(e);
+          })
+        })
+        this.playlists = playlists;
       },
       (error) => {
         console.log(error);

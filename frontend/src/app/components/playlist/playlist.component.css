@@ -42,3 +42,19 @@ img{
 button + button {
   margin-left: 10px;
 }
+
+.form-check-input:checked{
+  background-color: #1DB954;
+  border-color: #1DB954;
+}
+
+button{
+  background-color: #1DB954;
+  color: white;
+  border-color: #1DB954;
+}
+
+.btn:hover{
+  background-color: #1c9c49;
+  border-color: #1c9c49;
+}

@@ -88,9 +88,11 @@ this.posts =this.http.get("http://localhost:3000/api/tracks/"+this.artist)
 
   }
 
-  showDetails(){
-    console.log("made it to the function")
+  viewTrackDetails(trackId: any) {
+    console.log(this.obj);
+    this.router.navigate(['/tracks/' + trackId])
   }
+
   playSongOnyoutube(title:string){
     window.open("https://www.youtube.com/results?search_query="+ title)
   }

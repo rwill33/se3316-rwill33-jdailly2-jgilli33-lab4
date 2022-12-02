@@ -7,6 +7,7 @@ body{
 button{
   background-color: #1DB954;
   border-color: #1DB954;
+  margin-right: 10px;
 }
 .btn:hover{
   background-color: #199e47;

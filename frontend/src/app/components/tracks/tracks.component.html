@@ -1,83 +1,35 @@
 <app-navbar></app-navbar>
-<div>
-  <div class = "search">
-    <input type="text" name="searchByArtist" placeholder="Search by artist"  [(ngModel)]="artist"><button (click) = "getSearchArtist()"> Add Artist</button><button (click) = "getSearchTrack()"> Add Track</button><button (click) = "getSearchGenre()"> Add Genre</button>
-    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+<div class="container">
+  <div class="input-group">
+    <input type="text" id="searchBar" class="form-control" placeholder="Artist" [(ngModel)]="artist">
+    <input type="text" id="searchBar" class="form-control" placeholder="Track" [(ngModel)]="track">
+    <input type="text" id="searchBar" class="form-control" placeholder="Genre" [(ngModel)]="genre">
+    <button class="input-group-text" id="addon-wrapping" (click)="getArtists()"><span class="material-symbols-outlined">
+        search
+    </span></button>
   </div>
+</div>
 <div>
-
 <br>
-  <button (click) = "getArtists()">search artists</button>
-  <input type="checkbox" id="switch" [(ngModel)] = "isOn"/><label for="switch">display more info</label>
-  <!--
-  <table class = "displayInfo" >
+  <table class="table">
     <thead>
       <tr>
         <th scope="col">Artist Name</th>
         <th scope="col">Title</th>
-        <th scope="col"  *ngIf="showMe" >genres<th>
-        <th scope="col"  *ngIf="showMe">play-length</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let artist of obj ">
-        <th scope="row">{{ artist.name}}</th>
-        <td>{{ artist.title}}</td>
-        <td *ngIf="showMe">{{artist.genre}}</td>
-        <td *ngIf="showMe">{{artist.time}}</td>
-        <button (click)="playSongOnyoutube(artist.title)">Play song on youtube</button>
-      </tr>
-      
-    </tbody>
-  </table>
--->
-
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Artist Name</th>
-        <th scope="col">Title</th>
-        <th scope="col" *ngIf="showMe">genres</th>
-        <th scope="col" *ngIf="showMe">play-length</th>
-        <th scope="col" *ngIf="showMe">year</th>
-        <th scope="col">youtube</th>
+        <th scope="col">Search on Youtube</th>
+        <th scope="col">Details</th>
       </tr>
     </thead>
     <tbody>
       <tr  *ngFor="let artist of obj ">
-        
-        
         <td>{{ artist.name}}</td>
         <td>{{ artist.title}}</td>
-        <td *ngIf="showMe">{{artist.genre}}</td>
-        <td  *ngIf="showMe">{{artist.time}}</td>
-        <td  *ngIf="showMe">{{artist.year}}</td>
-        <td>   <button (click)="playSongOnyoutube(artist.title)">Play song on youtube</button> </td>
+        <td>   <button (click)="playSongOnyoutube(artist.title)" class="play"><i class="fa">&#xf16a;</i></button> </td>
+        <td><button class="btn btn-primary" (click)="viewTrackDetails(artist.id)">View Track Details</button> </td>
       </tr>
     </tbody>
   </table>
-
-  <!--<button (click) = "getPost()">show genres</button>
- 
-<div *ngFor = "let artist of artists">
-  {{artist}}
-
-
-
 </div>
-
-
-
- 
-<div *ngFor = "let post of posts | async">
-  {{post | json}}
-  <button (click)="showDetails()"> Show more details</button>
-  <button (click)="playSongOnyoutube()">Play song on youtube</button>
-  -->
-</div>
-
-
-</div>
-
+</body>

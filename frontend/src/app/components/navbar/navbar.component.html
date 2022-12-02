@@ -12,22 +12,8 @@
         <li class="nav-item">
           <a class="nav-link" href="/tracks">Tracks</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/genres">Genres</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/artists">Artists</a>
-        </li>
        
       </ul>
-      <div class="container">
-          <div class="input-group">
-            <input type="text" id="searchBar" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="addon-wrapping">
-            <button class="input-group-text" id="addon-wrapping" [routerLink]="'/tracks'"><span class="material-symbols-outlined">
-              search
-            </span></button>
-          </div>
-      </div>
       <button [routerLink]="'/dashboard'" *ngIf="!(this.loggedIn)" [ngClass]="'btn btn-outline-dark'">Log In</button>
       <div class="d-flex" *ngIf="(this.loggedIn)">
         <div class="input-group me-3">

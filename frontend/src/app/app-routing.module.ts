@@ -7,9 +7,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { HomeComponent } from './components/home/home.component';
 import {PublicPlaylistComponent} from './components/public_playlist/public-playlist.component';
-import {GenresComponent} from './components/genres/genres.component';
 import{TracksComponent} from './components/tracks/tracks.component';
-import {ArtistComponent} from './components/artist/artist.component';
 import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
@@ -24,6 +22,7 @@ import { AccountComponent } from './components/account/account.component';
 import { ContainerComponent } from './components/container/container.component';
 import { PublicPlaylistDetailsComponent } from './components/public-playlist-details/public-playlist-details.component';
 import { DisputesComponent } from './components/disputes/disputes.component';
+import { TrackDetailsComponent } from './components/track-details/track-details.component';
 const routes: Routes = [
   // { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   {path: '', component: HomeComponent},
@@ -38,9 +37,18 @@ const routes: Routes = [
       component: PublicPlaylistDetailsComponent
     }
   ]},
-  {path: 'artists', component: ArtistComponent},
-  {path: 'genres', component: GenresComponent},
-  {path: 'tracks', component: TracksComponent},
+
+  {path: 'tracks',
+  children: [
+    {
+      path: '',
+      component: TracksComponent
+    },
+    {path: ":id",
+    component: TrackDetailsComponent
+    }
+  ]
+},
   { path: 'home', redirectTo: '', pathMatch: 'full'},
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },

@@ -27,6 +27,7 @@ const admin = require("firebase-admin");
 const auth = require('firebase-admin/auth');
 const fb = require('firebase/app');
 const realtime = require('firebase/database')
+const similarity = require('string-similarity')
 const fbapp = fb.initializeApp({
   apiKey: "AIzaSyCTLGFrqn1NOrtUQMN7WITJBSve7vrj7VQ",
   authDomain: "rwill33-lab4.firebaseapp.com",
@@ -73,77 +74,51 @@ router.route('/updateUser').post((req, res) => {
     res.status(500).send("Error updating user");
   });
 })
-
-// Get genre names, IDs and parent IDs.
-router.route('/genres')
-  .get(async (req, res) => {
-          connection.query('SELECT * FROM Genres', (err, rows, fields) => {
-            if (err) {
-              res.status(500).send(`Error querying genres`)
-            } else {
-              const genres = [];
-              rows.map((genre) => {
-                genres.push({
-                  name: genre.title,
-                  id: genre.genreId,
-                  parentId: genre.parentId
-              })})
-              res.send(genres);
-            }
-          })
-    }
-  )
- 
-
-
+  router.route('/track/:id')
+  .get((req, res) => {
+    connection.query(`SELECT * FROM Tracks WHERE trackId=${req.params.id}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error querying Track`)
+      } else {
+        res.send(rows);
+      }
+    })
+  })
 
   router.route('/tracks/:name')
   .get(async (req, res) => {
-    const name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-
-
-
-
-
-    console.log("here")
+    let name = req.params.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     name2 = name.split(',')
+    name = name.split(',')
+    for(let i in name){
+      name[i] = name[i].toString()
+    }
 
    // var matches = stringSimilarity.
    // console.log(matches)
 
-
-    console.log(name[1])
     for(let i =0; i<name2.length;i++){
       
     name2[i] = '%'+name2[i]+'%';
     if(name2[i]=== "%%"){
      name2[i]=null;
     }
-      
-    console.log(name2[i]);
     }
-console.log(name2);
 
-    const query = "SELECT * FROM tracks WHERE (artistName LIKE ? or ? IS NULL) AND (trackTitle LIKE ? or ? IS NULL) AND (trackGenres LIKE ? or ? IS NULL);";
- 
-    
-    // 
- 
+    const query = "SELECT * FROM tracks;";
     let genreTitle;
     let genreTitles = [];
     let title;
 
-          connection.query(query,[name2[0],name2[0],name2[1],name2[1],name2[2],name2[2]], (err, rows, fields) => {
+          connection.query(query, (err, rows, fields) => {
             if (err) {
               res.status(500).send(`Error querying genres`)
             } else {
-              console.log("made it");
               const tracks = [];
               rows.map((track) => {
                 genreTitle = track.trackGenres.split('}, {')
                 for(let i in genreTitle){
-                    if(genreTitle[i] != ''){
+                    if(genreTitle[i]){
                       title = genreTitle[i].split(`title': '`)[1]
                       title = title.split(`', 'genre_url':`)[0]
                       genreTitles.push(title)
@@ -156,69 +131,24 @@ console.log(name2);
                     genreTitle += ', '
                   }
                 }
-                genreTitles = []
-                tracks.push({
-                  id: track.trackId,
-                  name: track.artistName,
-                  title: track.trackTitle,
-                  genre: genreTitle,
-                  time: track.trackDuration,
-                  year: track.trackDateCreated
+                
+                if(checkIf(name[0], track.artistName, name[1], track.trackTitle, name[2], genreTitles[0])){
+                  tracks.push({
+                    id: track.trackId,
+                    name: track.artistName,
+                    title: track.trackTitle,
+                    genre: genreTitle,
+                    time: track.trackDuration,
+                    year: track.trackDateCreated
           
-              })})
-              console.log(tracks.name)
-
-
-
+              })}
+              genreTitles = []
+            })
               res.send(tracks);
             }
           })
     }
   )
-
-    
-
-      
-    
-
-// Get the artist details (at least 6 key attributes) given  an artist ID.
-router.route('/artists/:id')
-  .get(async (req, res) => {
-    // const id = req.params.id.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const artist = await dataReader.getArtistById(id);
-    // if (artist) {
-    //   res.send(artist);
-    // } else {
-    //   res.status(404).send(`Artist with id=${id} was not found.`)
-    // }
-  })
-
-// Get the following details for a given track ID: album_id, album_title, artist_id, artist_name, tags, track_date_created, track_date_recorded, track_duration, track_genres, track_number, track_title
-router.route('/tracks/:id')
-  .get(async (req, res) => {
-    // const id = req.params.id.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const track = await dataReader.getTrackById(id);
-    // if (track) {
-    //   res.send(track);
-    // } else {
-    //   res.status(404).send(`Track with id=${id} was not found.`)
-    // }
-  })
-
-// Get the first n number of matching track IDs for a given search pattern matching the track title or album. If the number of matches is less than n, then return all matches. Please feel free to pick a suitable value for n.
-router.route('/tracks')
-  .get(async (req, res) => {
-    // const search = req.query.search.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const tracks = await dataReader.getTracksByTitleOrAlbum(search, 10);
-    // res.send(tracks);
-  })
-// Get all the matching artist IDs for a given search pattern matching the artist's name.
-router.route('/artists')
-  .get(async (req, res) => {
-    // const search = req.query.search.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // const artists = await dataReader.getArtistsByName(search);
-    // res.send(artists);
-  })
 
 router.route('/playlists/tracks/:id')
   // Get all tracks in a playlist
@@ -317,10 +247,21 @@ router.route('/comment/:id')
 
 })
 
+router.route('/countTracks/:playlistId')
+  .get((req, res) => {
+    connection.query(`SELECT COUNT(pt.trackId) as count, SUM(trackDuration) as duration, AVG(rating) as rating FROM PlaylistTracks pt JOIN Tracks t ON pt.trackId=t.trackId LEFT OUTER JOIN Reviews r ON pt.playlistId=r.playlistId WHERE pt.playlistId=${req.params.playlistId}`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Counting Tracks.`);
+      } else {
+        res.send(rows[0]);
+      }
+    });
+  })
+
 
 router.route('/publicPlaylists')
   .get((req, res) => {
-    connection.query(`SELECT * FROM UserPlaylists WHERE isPublic=true`, (err, rows, fields) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE isPublic=true ORDER BY modifiedDate DESC`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error Selecting Playlists.`);
       } else {
@@ -332,7 +273,7 @@ router.route('/publicPlaylists')
 router.route('/playlists')
   // Get all playlists
   .get(async (req, res) => {
-    connection.query(`SELECT * FROM UserPlaylists WHERE uid='iUMOeYpLWsb8mvoxqYtWJLHPabE2'`, (err, rows, fields) => {
+    connection.query(`SELECT * FROM UserPlaylists WHERE uid='${req.query.uid}' ORDER BY modifiedDate DESC`, (err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error Selecting Playlists.`);
       } else {
@@ -431,6 +372,7 @@ router.route('/playlists')
     });
   })
   
+<<<<<<< HEAD
   router.route('/policys')
   .put(async(req, res) => {
   console.log(req.body.pol);
@@ -469,6 +411,57 @@ router.route('/playlists')
   })
 
 
+=======
+function checkIf(n1, n2, n3, n4, n5, n6){
+  let bool = false;
+  if (n1) n1 = n1.toString().toLowerCase()
+  if (n2) n2 = n2.toString().toLowerCase()
+  if (n3) n3 = n3.toString().toLowerCase()
+  if (n4) n4 = n4.toString().toLowerCase()
+  if (n5) n5 = n5.toString().toLowerCase()
+  if (n6) n6 = n6.toString().toLowerCase()
+  if (!n2) n2 = "NULL VALUE SHOULD NOT MATCH"
+  if (!n4) n4 = "NULL VALUE SHOULD NOT MATCH"
+  if (!n6) n6 = "NULL VALUE SHOULD NOT MATCH"
+  if(n1 && !n3 && !n5){
+    if(similarity.compareTwoStrings(n1, n2) > 0.5 || n2.includes(n1)){bool = true}
+  }
+  else if(!n1 && n3 && !n5){
+    if(similarity.compareTwoStrings(n3, n4) > 0.5 || n4.includes(n3)){bool = true}
+  }
+  else if(!n1 && !n3 && n5){
+    if(similarity.compareTwoStrings(n5, n6) > 0.5 || n6.includes(n5)){bool = true}
+  }
+  else if(n1 && n3 && !n5){
+    if((similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n3, n4) > 0.5) || 
+    (n2.includes(n1) && n4.includes(n3)) || (similarity.compareTwoStrings(n1, n2) > 0.5 && n4.includes(n3)) ||
+    (n2.includes(n1) && similarity.compareTwoStrings(n3, n4) > 0.5)){bool = true}
+  }
+  else if(n1 && !n3 && n5){
+    if((similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) || 
+    (n2.includes(n1) && n6.includes(n5)) || (similarity.compareTwoStrings(n1, n2) > 0.5 && n6.includes(n5)) ||
+    (n2.includes(n1) && similarity.compareTwoStrings(n5, n6) > 0.5)){bool = true}
+  }
+  else if(!n1 && n3 && n5){
+    if((similarity.compareTwoStrings(n3, n4) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) || 
+    (n4.includes(n3) && n6.includes(n5)) || (similarity.compareTwoStrings(n3, n4) > 0.5 && n6.includes(n5)) ||
+    (n4.includes(n3) && similarity.compareTwoStrings(n5, n6) > 0.5)){bool = true}
+  }
+  else if(n1 && n3 && n5){
+    if((similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n3, n4) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (similarity.compareTwoStrings(n1, n2) > 0.5 && similarity.compareTwoStrings(n3, n4) > 0.5 && n6.includes(n5)) ||
+        (similarity.compareTwoStrings(n1, n2) > 0.5 && n4.includes(n3) && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (n2.includes(n1) && similarity.compareTwoStrings(n3, n4) > 0.5 && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (n2.includes(n1) && n4.includes(n3) && similarity.compareTwoStrings(n5, n6) > 0.5) ||
+        (n2.includes(n1) && n6.includes(n5) && similarity.compareTwoStrings(n3, n4) > 0.5) ||
+        (n6.includes(n5) && n4.includes(n3) && similarity.compareTwoStrings(n1, n2) > 0.5) ||
+        (n2.includes(n1) && n4.includes(n3) && n6.includes(n5))){
+          bool = true;
+        }
+  }
+  return bool;
+}
+>>>>>>> 3a03dbfcd91592cdfd13cfb8a553844fb9383f28
 
 app.use('/api', router);
 app.listen(port, () => console.log(`Listening on port ${port}...`));

@@ -5,6 +5,7 @@
 
 .nav-link{
   border-radius: 0;
+  color: black;
 }
 
 .main{
@@ -15,4 +16,8 @@
 
 .row{
   width: 100%;
+}
+
+.nav-link.active{
+  background-color: #1DB954;
 }

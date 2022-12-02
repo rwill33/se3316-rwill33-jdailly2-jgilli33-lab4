@@ -18,8 +18,8 @@ export class ExpressService {
     return this.http.post("http://localhost:3000/api/playlists", {name: playlistName, description: description ==="" ? null : description, playlistId: playlistId});
   }
 
-  getUserPlaylists() {
-    return this.http.get("http://localhost:3000/api/playlists");
+  getUserPlaylists(uid: any) {
+    return this.http.get("http://localhost:3000/api/playlists?uid=" + uid);
   }
 
   getGenres(){
@@ -32,6 +32,10 @@ export class ExpressService {
 
   getPlaylistById(id: number) {
     return this.http.get("http://localhost:3000/api/playlists/" + id);
+  }
+
+  getNumberOfTracks(playlistId: any) {
+    return this.http.get("http://localhost:3000/api/countTracks/" + playlistId);
   }
 
   deletePlaylist(id: number) {
@@ -75,8 +79,12 @@ export class ExpressService {
   }
 
   addDispute(reviewId : number, dateD: string, dateR:string){
-return this.http.put("http://localhost:3000/api/disputes",{ reviewId, dateD,dateR})
+    return this.http.put("http://localhost:3000/api/disputes",{ reviewId, dateD,dateR})
   }
+  getDispute(){
+    return this.http.get("http://localhost:3000/api/disputes" );
+  }
+<<<<<<< HEAD
 getDispute(){
   return this.http.get("http://localhost:3000/api/disputes" );
 }
@@ -93,6 +101,11 @@ postPolicy(pol :string, id:number){
 
 
 
+=======
+>>>>>>> 3a03dbfcd91592cdfd13cfb8a553844fb9383f28
 
+  getTrackById(id: any) {
+    return this.http.get("http://localhost:3000/api/track/" +id);
+  }
 
 }

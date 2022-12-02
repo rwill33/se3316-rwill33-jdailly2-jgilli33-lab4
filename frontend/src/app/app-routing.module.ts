@@ -11,6 +11,7 @@ import{TracksComponent} from './components/tracks/tracks.component';
 import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
+import { TakedownProcedureComponent } from './components/takedown-procedure/takedown-procedure.component';
 
 // route guard
 import { AuthGuard } from './shared/guard/auth.guard';
@@ -84,7 +85,13 @@ const routes: Routes = [
     path: 'disputes',
         component: DisputesComponent,
     canActivate: [PermissionGuard],
-    }],
+    },
+    {
+      path: 'takedown',
+      component: TakedownProcedureComponent,
+      canActivate: [PermissionGuard]
+    }
+  ],
 
     canActivate: [AuthGuard]},
   { path: 'forgot-password', component: ForgotPasswordComponent },

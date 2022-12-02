@@ -348,6 +348,30 @@ router.route('/playlists')
     // }
   })
 
+  router.route('/disputes')
+  .put(async(req, res) => {
+    console.log("here in disputes")
+    console.log(req.body.reviewId);
+    console.log(req.body.dateD);
+    console.log(req.body.dateR);
+    connection.query(`INSERT INTO disputes (reviewId,dateRequest,dateDispute) VALUES ('${req.body.reviewId}','${req.body.dateR}','${req.body.dateD}')`,(err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Getting disputes.`);
+      } else {
+        console.log("made it")
+        res.send(rows);
+      }
+    });
+  }).get(async (req, res) => {
+    connection.query(`SELECT * FROM disputes`, (err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Selecting disputes.`);
+      } else {
+        res.send(rows);
+      }
+    });
+  })
+  
 function checkIf(n1, n2, n3, n4, n5, n6){
   let bool = false;
   if (n1) n1 = n1.toString().toLowerCase()

@@ -2,7 +2,6 @@ import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -41,9 +40,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
+import { DisputesComponent } from './components/disputes/disputes.component';
 import { TrackDetailsComponent } from './components/track-details/track-details.component';
-
-
 
 @NgModule({
   declarations: [
@@ -68,6 +66,7 @@ import { TrackDetailsComponent } from './components/track-details/track-details.
     AcceptableUsePolicyComponent,
     PrivacyPolicyComponent,
     DmcaPolicyComponent,
+    DisputesComponent,
     TrackDetailsComponent,
 
   ],

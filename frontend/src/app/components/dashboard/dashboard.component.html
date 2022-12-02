@@ -23,6 +23,12 @@
               Admin
             </a>
           </li>
+          <li class="nav-item" *ngIf="authService.role.admin">
+            <a routerLinkActive="active" class="nav-link" routerLink="disputes">
+              Disputes
+            </a>
+          </li>
+
         </ul>
       </div>
     </nav>

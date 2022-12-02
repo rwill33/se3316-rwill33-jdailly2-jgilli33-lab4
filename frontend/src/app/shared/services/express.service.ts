@@ -78,6 +78,13 @@ export class ExpressService {
     return this.http.post("http://localhost:3000/api/comment", {isHidden: isHidden, reviewId: reviewId})
   }
 
+  addDispute(reviewId : number, dateD: string, dateR:string){
+    return this.http.put("http://localhost:3000/api/disputes",{ reviewId, dateD,dateR})
+  }
+  getDispute(){
+    return this.http.get("http://localhost:3000/api/disputes" );
+  }
+
   getTrackById(id: any) {
     return this.http.get("http://localhost:3000/api/track/" +id);
   }

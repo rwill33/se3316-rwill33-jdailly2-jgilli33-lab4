@@ -48,6 +48,9 @@ button + button {
   margin-left: 10px;
 }
 
+.report{
+  float: right;
+
 i{
   color: red;
   font-size:50px;

@@ -26,3 +26,8 @@ button{
 .cbox{
     color:#1DB954
 }
+
+.btn:hover{
+    background-color: #189c46;
+    border-color: #189c46;
+  }

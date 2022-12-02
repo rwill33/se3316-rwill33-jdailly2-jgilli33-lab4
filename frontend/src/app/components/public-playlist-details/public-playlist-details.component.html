@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="container">
   <div class="back-button">
       <span class="material-symbols-outlined" routerLink="../">
@@ -77,7 +78,7 @@
           <th scope="row">{{track.trackTitle}}</th>
           <td>{{track.albumTitle}}</td>
           <td>{{track.artistName}}</td>
-          <td><button class="btn btn-outline-primary" (click)="playSongOnyoutube(track.trackTitle)">Play song on youtube</button></td>
+          <td>   <button (click)="playSongOnyoutube(track.trackTitle)" class="play"><i class="fa">&#xf16a;</i></button> </td>
           <td><button class="btn btn-primary" (click)="viewTrackDetails(track.trackId)">View Track Details</button> </td>
         </tr>
       </tbody>

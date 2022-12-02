@@ -19,6 +19,7 @@
         <th scope="col">Artist Name</th>
         <th scope="col">Title</th>
         <th scope="col">Search on Youtube</th>
+        <th scope="col">Details</th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
         <td>{{ artist.name}}</td>
         <td>{{ artist.title}}</td>
         <td>   <button (click)="playSongOnyoutube(artist.title)" class="play"><i class="fa">&#xf16a;</i></button> </td>
+        <td><button class="btn btn-primary" (click)="viewTrackDetails(artist.id)">View Track Details</button> </td>
       </tr>
     </tbody>
   </table>

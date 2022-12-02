@@ -2,7 +2,6 @@ import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -28,9 +27,7 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { HomeComponent } from './components/home/home.component';
 import { ButtonComponent } from './components/button/button.component';
 import { PublicPlaylistComponent } from './components/public_playlist/public-playlist.component';
-import { GenresComponent } from './components/genres/genres.component';
 import { TracksComponent } from './components/tracks/tracks.component';
-import { ArtistComponent } from './components/artist/artist.component';
 import { AccountComponent } from './components/account/account.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -43,8 +40,9 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { AcceptableUsePolicyComponent } from './components/acceptable-use-policy/acceptable-use-policy.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
-
-
+import { DisputesComponent } from './components/disputes/disputes.component';
+import { TrackDetailsComponent } from './components/track-details/track-details.component';
+import { TakedownProcedureComponent } from './components/takedown-procedure/takedown-procedure.component';
 
 @NgModule({
   declarations: [
@@ -58,9 +56,7 @@ import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.compon
     HomeComponent,
     ButtonComponent,
     PublicPlaylistComponent,
-    GenresComponent,
     TracksComponent,
-    ArtistComponent,
     AccountComponent,
     AlertComponent,
     AdminComponent,
@@ -71,6 +67,9 @@ import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.compon
     AcceptableUsePolicyComponent,
     PrivacyPolicyComponent,
     DmcaPolicyComponent,
+    DisputesComponent,
+    TrackDetailsComponent,
+    TakedownProcedureComponent,
 
   ],
   imports: [

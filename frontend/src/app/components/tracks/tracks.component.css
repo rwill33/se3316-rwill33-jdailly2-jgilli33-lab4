@@ -1,0 +1,33 @@
+body{
+    padding: 10px;
+}
+
+.container{
+    width: 500px;
+}
+
+i{
+    color: red;
+    font-size:32px;
+    background-color: white;
+}
+
+.play{
+    outline: 0;
+    border: hidden;
+    background-color: white;
+}
+
+button{
+    background-color: #1DB954;
+    border: hidden;
+}
+
+.cbox{
+    color:#1DB954
+}
+
+.btn:hover{
+    background-color: #189c46;
+    border-color: #189c46;
+  }

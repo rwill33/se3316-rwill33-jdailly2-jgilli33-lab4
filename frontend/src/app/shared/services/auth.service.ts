@@ -94,8 +94,12 @@ export class AuthService {
         this.SetUserData(result.user);
         this.afAuth.authState.subscribe((user) => {
           if (user) {
-            this.setError(false);
-            this.router.navigate(['']);
+            if (!user.emailVerified) {
+              this.router.navigate(['verify-email-address']);
+            } else {
+              this.setError(false);
+              this.router.navigate(['']);
+            }
           }
         });
       })

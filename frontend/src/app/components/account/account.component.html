@@ -1,4 +1,4 @@
-
+<body>
   <div class="inner-adjust">
     <div class="pt-3 pb-2 mb-3 border-bottom">
       <h1 class="h2">User Profile</h1>
@@ -9,13 +9,18 @@
       <div class="col-md-12">
         <div class="media">
           <div class="media-body">
-            <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+            <h1>Hello <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
             <p>Email: <strong>{{user.email}}</strong></p>
             <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
           </div>
         </div>
         <!-- Button trigger modal -->
+        <div class="buttons">
         <button type="button" class="btn btn-primary" (click)="openModal(template)">Change Password</button>
+        <button class="btn btn-primary" [routerLink]="'/dashboard/takedown'" *ngIf="this.isAdmin">
+          DMCA Takedown Procedure
+        </button>
+      </div>
       </div>
     </div>
   </div>
@@ -47,3 +52,4 @@
       </button>
     </div>
   </ng-template>
+</body>

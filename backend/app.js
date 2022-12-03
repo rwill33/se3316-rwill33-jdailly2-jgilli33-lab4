@@ -378,6 +378,7 @@ router.route('/playlists')
     console.log(req.body.pol);
       connection.query(`UPDATE policys SET policyDoc = '${req.body.pol}' WHERE policysId = '${req.body.id}'`,(err, rows, fields) => {
         if (err) {
+          console.log(err);
           res.status(500).send(`Error Getting policys.`);
         } else {
           console.log("made it")
@@ -391,6 +392,7 @@ router.route('/playlists')
   console.log(req.params.id);
     connection.query(`SELECT * FROM policys WHERE policysId='${req.params.id}'`,(err, rows, fields) => {
       if (err) {
+        console.log(err);
         res.status(500).send(`Error Getting policys.`);
       } else {
         console.log("made it")

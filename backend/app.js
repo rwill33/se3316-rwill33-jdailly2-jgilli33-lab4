@@ -355,7 +355,7 @@ router.route('/playlists')
     console.log(req.body.reviewId);
     console.log(req.body.dateD);
     console.log(req.body.dateR);
-    connection.query(`INSERT INTO disputes (reviewId,dateRequest,dateDispute) VALUES ('${req.body.reviewId}','${req.body.dateR}','${req.body.dateD}')`,(err, rows, fields) => {
+    connection.query(`INSERT INTO Disputes (reviewId,dateRequest,dateDispute) VALUES ('${req.body.reviewId}','${req.body.dateR}','${req.body.dateD}')`,(err, rows, fields) => {
       if (err) {
         res.status(500).send(`Error Getting disputes.`);
       } else {
@@ -364,9 +364,9 @@ router.route('/playlists')
       }
     });
   }).get(async (req, res) => {
-    connection.query(`SELECT * FROM disputes`, (err, rows, fields) => {
+    connection.query(`SELECT * FROM Disputes`, (err, rows, fields) => {
       if (err) {
-        res.status(500).send(`Error Selecting disputes.`);
+        res.status(500).send(`Error Selecting Disputes.`);
       } else {
         res.send(rows);
       }
@@ -376,7 +376,7 @@ router.route('/playlists')
   router.route('/policys')
   .post(async(req, res) => {
     console.log(req.body.pol);
-      connection.query(`UPDATE policys SET policyDoc = '${req.body.pol}' WHERE policysId = '${req.body.id}'`,(err, rows, fields) => {
+      connection.query(`UPDATE Policys SET policyDoc = '${req.body.pol}' WHERE policysId = '${req.body.id}'`,(err, rows, fields) => {
         if (err) {
           console.log(err);
           res.status(500).send(`Error Getting policys.`);
@@ -390,7 +390,7 @@ router.route('/playlists')
   router.route('/policys/:id')
   .get(async(req, res) => {
   console.log(req.params.id);
-    connection.query(`SELECT * FROM policys WHERE policysId='${req.params.id}'`,(err, rows, fields) => {
+    connection.query(`SELECT * FROM Policys WHERE policysId='${req.params.id}'`,(err, rows, fields) => {
       if (err) {
         console.log(err);
         res.status(500).send(`Error Getting policys.`);

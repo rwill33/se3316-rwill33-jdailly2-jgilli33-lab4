@@ -373,6 +373,33 @@ router.route('/playlists')
     });
   })
   
+  router.route('/policys')
+  .post(async(req, res) => {
+    console.log(req.body.pol);
+      connection.query(`UPDATE policys SET policyDoc = '${req.body.pol}' WHERE policysId = '${req.body.id}'`,(err, rows, fields) => {
+        if (err) {
+          res.status(500).send(`Error Getting policys.`);
+        } else {
+          console.log("made it")
+          res.send(rows);
+        }
+      });
+    })
+
+  router.route('/policys/:id')
+  .get(async(req, res) => {
+  console.log(req.params.id);
+    connection.query(`SELECT * FROM policys WHERE policysId='${req.params.id}'`,(err, rows, fields) => {
+      if (err) {
+        res.status(500).send(`Error Getting policys.`);
+      } else {
+        console.log("made it")
+        res.send(rows);
+      }
+    });
+  })
+
+
 function checkIf(n1, n2, n3, n4, n5, n6){
   let bool = false;
   if (n1) n1 = n1.toString().toLowerCase()

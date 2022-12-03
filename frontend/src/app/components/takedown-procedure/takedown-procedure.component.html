@@ -1,13 +1,11 @@
-<h1>DMCA Notice Takedown Procedure</h1>
-<h2>Logging Disputes</h2>
-<p>The first step to take is to ensure that the dispute is legitimate. Verify claims made in the dispute and check copyrighted material as well as the disputed review for infringement.</p>
-<p>Once a dispute is verified, find the <a href='/dashboard/disputes'>Disputes Page</a>. Here, you may enter the review ID, date the request was received, and the date the dispute was received and save it to the website.</p>
-<h2>Removing Material</h2>
-<p>The next step is to hide the disputed review pending evaluation. Ensure you are logged in to a valid administrator account, and navigate to the disputed review via the playlist it is writted to. From here, click on view reviews, find the infringing review, and click hide.</p>
-<h2>Notifying the user</h2>
-<p>Once the review is removed, the poster must be notified. This can be done using the email linked to their account. Forward the user a copy of the dispute, as well as a copy of their removed review. Inform them of the importance of responding to the dispute. Ask them if they agree with the removal of the dispute, or if they plan to counter the claim.</p>
-<h2>Further Steps</h2>
-<p class="b">With a response from the user who posted the disputed content, do the following:</p>
-<p>1. If the user agrees with the review's removal, the review can be deleted.</p>
-<p>2. If the user files a counter-dispute, do not delete the review, but ensure it is still hidden pending the results of the counter claim. If the claim is successful, the content can be restored to the website. Otherwise, it can be removed.</p>
-
+<div *ngIf="!this.edit" [innerHtml]="this.obj">
+</div>
+<button class="btn btn-primary" style="margin: 8px;" (click)="this.edit = !this.edit" [hidden]="hidden">{{!this.edit ? "Edit" : "Cancel"}}</button>
+<div style="width: 100%;" [hidden]="!this.edit">
+  <hr>
+  <h2>
+    Edit Policy
+  </h2>
+  <textarea #privacy style="width: 100%; height: 500px;" [defaultValue]="this.obj"></textarea>
+</div>
+<button class="btn btn-primary" style="margin: 8px;" (click)="save(privacy.value)"  [hidden]="!this.edit" >Save</button>

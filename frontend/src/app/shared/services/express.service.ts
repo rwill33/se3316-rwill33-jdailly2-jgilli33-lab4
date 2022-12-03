@@ -87,22 +87,13 @@ export class ExpressService {
     return this.http.get(`${this.hostName}/api/disputes` );
   }
 
-
-putPolicy(pol :string){
-  return this.http.put("http://localhost:3000/api/policys/" ,{ pol} );
-
-}
-getPolicy(id:number){
-  return this.http.get("http://localhost:3000/api/policys/" + id );
-}
-postPolicy(pol :string, id:number){
-  return this.http.post("http://localhost:3000/api/policys" ,{ id,pol} );
-}
-
-
-
-
-
+  getPolicy(id:number){
+    return this.http.get(`${this.hostName}/api/policys/` + id );
+  }
+  postPolicy(pol :string, id:number){
+    return this.http.post(`${this.hostName}/api/policys` ,{ id,pol} );
+  }
+  
   getTrackById(id: any) {
     return this.http.get(`${this.hostName}/api/track/` +id);
   }

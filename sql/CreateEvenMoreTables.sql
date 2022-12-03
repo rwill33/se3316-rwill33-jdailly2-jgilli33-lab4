@@ -165,10 +165,10 @@ INSERT INTO Policys (policyDoc) VALUES ('<h1>DMCA policy</h1>
 <p>This document was last updated on November 30, 2022</p>
 <p class="madewith"><a href="https://www.websitepolicies.com/?via=madewithbadge" target="_blank" rel="nofollow"><img width="200" height="25" alt="Made with WebsitePolicies" src="https://cdn.websitepolicies.io/img/badge.png" srcset="https://cdn.websitepolicies.io/img/badge_2x.png 2x"></a></p>');
 
-INSERT INTO Policys (policyDoc) VALUES (`<h1>DMCA Notice Takedown Procedure</h1>
+INSERT INTO Policys (policyDoc) VALUES ('<h1>DMCA Notice Takedown Procedure</h1>
 <h2>Logging Disputes</h2>
 <p>The first step to take is to ensure that the dispute is legitimate. Verify claims made in the dispute and check copyrighted material as well as the disputed review for infringement.</p>
-<p>Once a dispute is verified, find the <a href='/dashboard/disputes'>Disputes Page</a>. Here, you may enter the review ID, date the request was received, and the date the dispute was received and save it to the website.</p>
+<p>Once a dispute is verified, find the <a href="/dashboard/disputes">Disputes Page</a>. Here, you may enter the review ID, date the request was received, and the date the dispute was received and save it to the website.</p>
 <h2>Removing Material</h2>
 <p>The next step is to hide the disputed review pending evaluation. Ensure you are logged in to a valid administrator account, and navigate to the disputed review via the playlist it is writted to. From here, click on view reviews, find the infringing review, and click hide.</p>
 <h2>Notifying the user</h2>
@@ -177,6 +177,6 @@ INSERT INTO Policys (policyDoc) VALUES (`<h1>DMCA Notice Takedown Procedure</h1>
 <p class="b">With a response from the user who posted the disputed content, do the following:</p>
 <p>1. If the user agrees with the reviews removal, the review can be deleted.</p>
 <p>2. If the user files a counter-dispute, do not delete the review, but ensure it is still hidden pending the results of the counter claim. If the claim is successful, the content can be restored to the website. Otherwise, it can be removed.</p>
-`)
+')
 
 

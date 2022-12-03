@@ -187,13 +187,4 @@ playSongOnyoutube(title:string){
 viewTrackDetails(trackId: any) {
   this.router.navigate(['/tracks/' + trackId])
 }
-
-
-reportBtn(){
-
-
-
-}
-
-
 }

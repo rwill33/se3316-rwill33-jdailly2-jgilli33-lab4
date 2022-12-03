@@ -1,0 +1,12 @@
+h2{
+    font-weight: bold;
+    font-size: medium;
+}
+
+p{
+    text-indent: 20px;
+}
+
+.b{
+    text-indent: 0;
+}

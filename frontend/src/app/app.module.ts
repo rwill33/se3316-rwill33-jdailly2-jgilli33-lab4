@@ -42,6 +42,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { DmcaPolicyComponent } from './components/dmca-policy/dmca-policy.component';
 import { DisputesComponent } from './components/disputes/disputes.component';
 import { TrackDetailsComponent } from './components/track-details/track-details.component';
+import { TakedownProcedureComponent } from './components/takedown-procedure/takedown-procedure.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { TrackDetailsComponent } from './components/track-details/track-details.
     DmcaPolicyComponent,
     DisputesComponent,
     TrackDetailsComponent,
+    TakedownProcedureComponent,
 
   ],
   imports: [

@@ -16,10 +16,12 @@ export class AccountComponent implements OnInit, OnDestroy {
   error?: boolean;
   errorMessage?: string | null;
   success: boolean = false;
+  isAdmin: boolean = this.authService.role.admin;
   constructor(
     public authService: AuthService,
     private modalService: BsModalService
   ) {
+    
     this.authService.getError().subscribe((value) => {
       this.error = value;
     });

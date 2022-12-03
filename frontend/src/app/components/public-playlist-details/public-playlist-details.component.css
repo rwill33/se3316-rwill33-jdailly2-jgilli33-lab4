@@ -50,6 +50,8 @@ button + button {
 
 .report{
   float: right;
+}
+i{
   color: red;
   font-size:50px;
   background-color: white;

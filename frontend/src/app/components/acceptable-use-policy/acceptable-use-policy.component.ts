@@ -9,85 +9,55 @@ import { Router } from '@angular/router';
   styleUrls: ['./acceptable-use-policy.component.css']
 })
 export class AcceptableUsePolicyComponent implements OnInit {
-  contentEditable: boolean = true
   hidden: boolean = false;
-  body:any;
-obj:any;
+  obj:any;
+  edit: boolean = false;
   constructor(public authService: AuthService,
     private http: HttpClient,
     private expressService: ExpressService,
     private router: Router) { }
- 
+
   ngOnInit(): void {
-    if(this.authService?.role.admin === true){
-      this.contentEditable = true;
-      
+      if(this.authService.role ? this.authService.role.admin : false){
+        this.hidden = false;
       }else{
-        this.contentEditable = false;
+        this.hidden = true;
       }
-
-
-      document.querySelector('body')?.remove();
-  
-      this.expressService.getPolicy(16).subscribe(
+      this.expressService.getPolicy(2).subscribe(
         (response: any) => {
-      this.obj = response;
-        
-          var parser = new DOMParser();
-       var doc = parser.parseFromString(this.obj[0].policyDoc, 'text/html');
-       document.querySelector('html')?.append(doc.documentElement);
-      
-       let btn = document.createElement('button')
-      btn.innerText = "save"
-       btn.addEventListener("click", Event => this.save())
-       document.querySelector('body')?.appendChild(btn);
-      
-      
+        this.obj = response[0].policyDoc;
+        console.log(response[0].policyDoc);
         },
         (error) => {
           console.log(error);
         });
-
-
   }
 
 
-  save(){
-    if(this.authService?.role.admin === true){
-      this.contentEditable = true;
-      
-      
-    
-      this.body =  document.querySelector('body')?.innerHTML
-    
- 
-  /*
-  this.expressService.putPolicy(this.body).subscribe(
-   (response: any) => {
-     console.log(response);
-   },
-   (error) => {
-     console.log("hello World")
-     console.log(error);
-   });
-*/
-   this.expressService.postPolicy(this.body,16).subscribe(
-     (response: any) => {
-       
-     console.log("in the post")
-     },
-     (error) => {
-       console.log("hello World")
-       console.log(error);
-     });
- 
- var parser = new DOMParser();
-  var doc = parser.parseFromString(this.body, 'text/html');
- 
-   }
+  save(innerHTML: any){
+    console.log(innerHTML);
+    if(this.authService.role ? this.authService.role.admin : false){
+      this.expressService.postPolicy(innerHTML,2).subscribe(
+        (response: any) => {
+        console.log("in the post")
+        this.expressService.getPolicy(2).subscribe(
+          (response: any) => {
+          this.obj = response[0].policyDoc;
+          this.edit = false;
+          console.log(response[0].policyDoc);
+          },
+          (error) => {
+            console.log(error);
+          });
+        },
+        (error) => {
+          console.log("hello World")
+          console.log(error);
+        });
+      }
   }
- 
- 
- 
+
+
+
 
 }

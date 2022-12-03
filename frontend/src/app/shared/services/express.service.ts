@@ -94,7 +94,7 @@ getPolicy(id:number){
   return this.http.get("http://localhost:3000/api/policys/" + id );
 }
 postPolicy(pol :string, id:number){
-  return this.http.post("http://localhost:3000/api/policys/" ,{ id,pol} );
+  return this.http.post("http://localhost:3000/api/policys" ,{ id,pol} );
 }
 
 

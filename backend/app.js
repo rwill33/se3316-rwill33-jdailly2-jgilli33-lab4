@@ -373,17 +373,6 @@ router.route('/playlists')
   })
   
   router.route('/policys')
-  .put(async(req, res) => {
-  console.log(req.body.pol);
-    connection.query(`INSERT INTO policys (policyDoc) VALUES ('${req.body.pol}')`,(err, rows, fields) => {
-      if (err) {
-        res.status(500).send(`Error Getting policys.`);
-      } else {
-        console.log("made it")
-        res.send(rows);
-      }
-    });
-  })
   .post(async(req, res) => {
     console.log(req.body.pol);
       connection.query(`UPDATE policys SET policyDoc = '${req.body.pol}' WHERE policysId = '${req.body.id}'`,(err, rows, fields) => {

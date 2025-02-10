@@ -1,15 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
-import { User } from '../services/user';
-import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FirebaseError } from 'firebase/app';
+import * as auth from 'firebase/auth';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from '../services/user';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,8 +29,8 @@ export class AuthService {
   ) {
     this.success = new BehaviorSubject<boolean>(false);
     this.error = new BehaviorSubject<boolean>(false);
-    this.errorMessage = new BehaviorSubject<string>("");
-    this.alert = new BehaviorSubject<string>("");
+    this.errorMessage = new BehaviorSubject<string>('');
+    this.alert = new BehaviorSubject<string>('');
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
@@ -38,29 +38,35 @@ export class AuthService {
         this.userData = user;
         console.log(user);
         const ref = this.db.object('users/' + user.uid);
-        ref.query.ref.on('value', (snapshot) => {
-          const role = snapshot.val();
-          if(role === null) {
-            ref.set(
-              {admin: false,
-              username: user.displayName,
-              email: user.email,
-              isDisabled: false,
-              }
-            );
-            localStorage.setItem('role', JSON.stringify({admin: false}));
-          } else {
-            localStorage.setItem('role', JSON.stringify({admin: role.admin}));
+        ref.query.ref.on(
+          'value',
+          (snapshot) => {
+            const role = snapshot.val();
+            if (role === null) {
+              ref.set({
+                admin: false,
+                username: user.displayName,
+                email: user.email,
+                isDisabled: false,
+              });
+              localStorage.setItem('role', JSON.stringify({ admin: false }));
+            } else {
+              localStorage.setItem(
+                'role',
+                JSON.stringify({ admin: role ? role.admin : false })
+              );
+            }
+          },
+          (errorObject) => {
+            console.log('The read failed: ' + errorObject.name);
           }
-        }, (errorObject) => {
-          console.log('The read failed: ' + errorObject.name);
-        });
+        );
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
         JSON.parse(localStorage.getItem('role')!);
       } else {
         localStorage.setItem('user', 'null');
-        localStorage.setItem('role', 'null');
+        localStorage.setItem('role', JSON.stringify({ admin: true }));
         JSON.parse(localStorage.getItem('user')!);
         JSON.parse(localStorage.getItem('role')!);
       }
@@ -107,7 +113,7 @@ export class AuthService {
         // window.alert(error.message);
         console.log(error.code);
         this.setError(true);
-        this.setErrorMessage(error.message)
+        this.setErrorMessage(error.message);
       });
   }
   // Sign up with email/password
@@ -115,7 +121,7 @@ export class AuthService {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        result.user?.updateProfile({displayName: username})
+        result.user?.updateProfile({ displayName: username });
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
@@ -149,11 +155,11 @@ export class AuthService {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.emailVerified !== false ? true : false;
   }
-    // Returns true when user is logged in and email is verified
+  // Returns true when user is logged in and email is verified
   get user(): any {
-      const user = JSON.parse(localStorage.getItem('user')!);
-      return user;
-    }
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user;
+  }
   get role(): any {
     const role = JSON.parse(localStorage.getItem('role')!);
     return role;
@@ -176,55 +182,69 @@ export class AuthService {
         this.SetUserData(result.user);
       })
       .catch((error) => {
-        if( error.code === "auth/user-disabled") {
-          window.alert("Account has been disabled.\nPlease contact rwill33@uwo.ca for help.");
-        } else{
+        if (error.code === 'auth/user-disabled') {
+          window.alert(
+            'Account has been disabled.\nPlease contact rwill33@uwo.ca for help.'
+          );
+        } else {
           window.alert(error);
         }
       });
   }
-  ChangePassword(oldPassword: string, password: string, confirmPassword: string) {
+  ChangePassword(
+    oldPassword: string,
+    password: string,
+    confirmPassword: string
+  ) {
     if (password === confirmPassword) {
       this.afAuth.currentUser.then((user: any) => {
         if (user) {
-          const credential = auth.EmailAuthProvider.credential(user.email, oldPassword)
-          user.reauthenticateWithCredential(credential).then((data: any) => {
-            console.log("Reauthenticated!");
-            data.user.updatePassword(password)
-            .then(() => {
-              console.log("Update Success!")
-              this.setSuccess(true);
-              // Update successful.
-            }).catch((error: FirebaseError) => {
+          const credential = auth.EmailAuthProvider.credential(
+            user.email,
+            oldPassword
+          );
+          user
+            .reauthenticateWithCredential(credential)
+            .then((data: any) => {
+              console.log('Reauthenticated!');
+              data.user
+                .updatePassword(password)
+                .then(() => {
+                  console.log('Update Success!');
+                  this.setSuccess(true);
+                  // Update successful.
+                })
+                .catch((error: FirebaseError) => {
+                  this.setError(true);
+                  if (error.code === 'auth/weak-password') {
+                    this.setErrorMessage(
+                      'Password must be at least 6 characters'
+                    );
+                  } else {
+                    this.setErrorMessage(error.code);
+                  }
+                  console.log(error);
+                  this.setSuccess(false);
+                  // An error ocurred
+                  // ...
+                });
+            })
+            .catch((error: FirebaseError) => {
               this.setError(true);
-              if (error.code === "auth/weak-password") {
-                this.setErrorMessage("Password must be at least 6 characters");
+              if (error.code === 'auth/wrong-password') {
+                this.setErrorMessage('Invalid old password');
               } else {
                 this.setErrorMessage(error.code);
               }
-              console.log(error)
+              console.log(error);
               this.setSuccess(false);
-              // An error ocurred
-              // ...
             });
-          }
-
-          ).catch((error: FirebaseError) => {
-            this.setError(true);
-              if (error.code === "auth/wrong-password") {
-                this.setErrorMessage("Invalid old password");
-              } else {
-                this.setErrorMessage(error.code);
-              }
-            console.log(error)
-            this.setSuccess(false);
-          })
         }
-      })
+      });
     } else {
-      console.log("Passwords must match");
+      console.log('Passwords must match');
       this.setError(true);
-      this.setErrorMessage("Passwords Must Match");
+      this.setErrorMessage('Passwords Must Match');
     }
   }
 
